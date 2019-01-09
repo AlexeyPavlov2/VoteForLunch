@@ -120,9 +120,9 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 Форматы результатов запросов даны в виде примеров работы с curl.
 Следут помнить, что запросы **curl** должны содержать имя и пароль, например
 
-**_curl http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/20181228/menuitems -u alex:qwerty2_**
+**_curl http:<i></i>//localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/20181228/menuitems -u alex:qwerty2_**
     
-В демо-приложении существую следующие пользователи:
+В демо-приложении существуют следующие пользователи:
 
 | Пользователь  | Пароль | Роли |  
 | ------------- | ------------- | ------------- |
@@ -132,7 +132,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | bill | qwerty4 | USER |
 
     
-Работа с программой выгладит следующим образом:
+Работа с программой выглядит следующим образом:
  - Администратор системы вводит данные об обеденном меню ресторанов.   
  При необходимости вносит сведения о ресторане, блюде и строке меню, содержащей блюдо и стоимость.
  - Пользователь изучает текущее меню по адресу /public/menu/{date}
@@ -226,7 +226,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 
 
-Для зарегистрированных пользователей:
+Для зарегистрированных пользователей:  
 &#x1F53C;  **Список функций REST API приложения для ресурса** **_http:<i></i>//host:port/voteforlunch/api/v1/profile/:_**
 
 | Ресурс  | POST | GET | PUT | DELETE |

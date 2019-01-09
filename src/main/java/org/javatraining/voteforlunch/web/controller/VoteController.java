@@ -41,9 +41,9 @@ public class VoteController {
         logger.info("Vote!");
         LocalDateTime dateTime = LocalDateTime.now();
         LocalDateTime expiredDateTime = LocalDateTime.now().with(LocalTime.of(11, 0));
-        /*if (dateTime.isAfter(expiredDateTime)) {
+        if (dateTime.isAfter(expiredDateTime)) {
             throw new TimeExpiredExeption("User can vote until 11 am");
-        }*/
+        }
 
         String currentUserName = "";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

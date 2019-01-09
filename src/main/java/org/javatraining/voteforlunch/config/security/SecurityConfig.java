@@ -3,48 +3,77 @@ package org.javatraining.voteforlunch.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 
-//@Configuration
-//@EnableWebSecurity
-public class SecurityConfig /*extends WebSecurityConfigurerAdapter*/ {
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-    /*@Autowired
-    @Qualifier(value = "userServiceImpl")
+    private static String REALM="MY_TEST_REALM";
+
+    @Autowired
+    @Qualifier(value = "customUserDetailService")
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordencoder());
-    }*/
+    /*@Autowired
+    private AuthenticationEntryPoint entryPoint;*/
 
-    /* //пробовал и так
-    @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+    //@Autowired
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordencoder());
+    }
+
+
+
+    //пробовал и так
+    //@Autowired
+    /*@Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info("Call AMB");
         auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("tom").password("abc123").roles("USER");
-
     }*/
-/*
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        *//*http.csrf().disable()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/register/**", "/resource/**", "/public").permitAll()
-                .antMatchers("/vote/**").hasRole("USER")
-                .antMatchers("/admin/**", "/service/*").hasAuthority("ADMIN")
+                .antMatchers("/", "/login", "/register/**", "/public", "/resource/**").permitAll()
+                .antMatchers("/profile/vote").hasRole("USER")
+                .antMatchers("/admin/**", "/service/**").hasRole("ADMIN")
                 .and()
                 .httpBasic()
+                .realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
                 .and()
                 .formLogin()
                 .disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*//*
-    }*/
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
 
-    /*@Bean(name = "passwordEncoder")
+    @Bean(name = "passwordEncoder")
     public PasswordEncoder passwordencoder() {
         return new BCryptPasswordEncoder();
-    }*/
+    }
+
+    @Bean
+    public CustomBasicAuthenticationEntryPoint getBasicAuthEntryPoint(){
+        return new CustomBasicAuthenticationEntryPoint();
+    }
 }
 
 

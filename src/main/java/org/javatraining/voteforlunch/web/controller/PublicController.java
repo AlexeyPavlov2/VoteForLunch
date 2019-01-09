@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -62,14 +63,6 @@ public class PublicController {
                     RestaurantUtil.createDtoFrom(el.getKey()), collect1));
         });
         return list;
-    }
-
-    @GetMapping(value = "/votes/{date}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public List<VoteDto> getVotes(@PathVariable("date") String date) {
-        logger.info("Get votes this date");
-        LocalDateTime localDateTime = DateTimeUtil.getParseDateString(date).atStartOfDay();
-        return voteUtil.createDtoListFromEntityList(voteRepository.findVotesByDatev(localDateTime));
     }
 
     @GetMapping(value = "/votes/{date}/votingresults")

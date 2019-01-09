@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -38,23 +41,19 @@ public class VoteController {
         logger.info("Vote!");
         LocalDateTime dateTime = LocalDateTime.now();
         LocalDateTime expiredDateTime = LocalDateTime.now().with(LocalTime.of(11, 0));
-        if (dateTime.isAfter(expiredDateTime)) {
-            throw new TimeExpiredExeption("User can vote up to 11 hours");
-        }
+        /*if (dateTime.isAfter(expiredDateTime)) {
+            throw new TimeExpiredExeption("User can vote until 11 am");
+        }*/
 
-        /*String currentUserName = "";
+        String currentUserName = "";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
         }
 
-        User user = userService.readByName(currentUserName);*/
-
-        User user = userService.read(1);
-        voteRepository.removeByDateAndUserId(LocalDate.now().atStartOfDay(),
-                user.getId());
+        User user = userService.readByName(currentUserName);
+        voteRepository.removeByDateAndUserId(LocalDate.now().atStartOfDay(), user.getId());
         voteRepository.save(new Vote(0, dateTime, user, restaurantService.read(restaurantId)));
     }
-
 
 }

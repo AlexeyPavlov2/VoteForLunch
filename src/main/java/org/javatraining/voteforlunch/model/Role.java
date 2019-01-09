@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role /*implements GrantedAuthority*/ {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -23,9 +24,9 @@ public class Role /*implements GrantedAuthority*/ {
     @Size(min=3, message="Name should have at least 3 characters")
     private String name;
 
-    /*@Override
+    @Override
     public String getAuthority() {
         return name;
-    }*/
+    }
 }
 

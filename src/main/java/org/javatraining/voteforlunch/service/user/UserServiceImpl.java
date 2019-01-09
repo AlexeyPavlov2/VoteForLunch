@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
@@ -125,13 +127,8 @@ public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
         return user;
     }
 
-    /*@Override
-    public AuthorizedUser loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findByName(name.toLowerCase());
-        if (user == null) {
-            throw new UsernameNotFoundException("User with name = " + name + " is not found");
-        }
-        return new AuthorizedUser(user);
-    }*/
+
+
+
 
 }

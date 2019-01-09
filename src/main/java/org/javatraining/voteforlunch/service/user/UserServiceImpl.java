@@ -1,24 +1,23 @@
 package org.javatraining.voteforlunch.service.user;
 
-import org.javatraining.voteforlunch.config.security.AuthorizedUser;
+import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Role;
 import org.javatraining.voteforlunch.model.User;
 import org.javatraining.voteforlunch.repository.RoleRepository;
 import org.javatraining.voteforlunch.repository.UserRepository;
-import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

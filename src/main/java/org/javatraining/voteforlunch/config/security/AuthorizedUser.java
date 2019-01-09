@@ -10,7 +10,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     private UserDto userTo;
 
     public AuthorizedUser(User user) {
-        super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
+        super(user.getName(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
         this.userTo = UserUtil.createDtoFrom(user);
     }
 

@@ -49,9 +49,11 @@ public class VoteController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
+            logger.info(":doVote - Current user name: " + currentUserName);
         }
 
         User user = userService.readByName(currentUserName);
+
         voteRepository.removeByDateAndUserId(LocalDate.now().atStartOfDay(), user.getId());
         voteRepository.save(new Vote(0, dateTime, user, restaurantService.read(restaurantId)));
     }

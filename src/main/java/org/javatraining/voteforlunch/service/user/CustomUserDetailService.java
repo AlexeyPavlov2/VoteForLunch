@@ -3,6 +3,8 @@ package org.javatraining.voteforlunch.service.user;
 import org.javatraining.voteforlunch.config.security.AuthorizedUser;
 import org.javatraining.voteforlunch.model.Role;
 import org.javatraining.voteforlunch.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
+    private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailService.class);
     private final UserService userService;
 
     @Autowired
@@ -27,6 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public AuthorizedUser loadUserByUsername(String name) throws UsernameNotFoundException {
         User user = userService.readByName(name);
+        logger.info("loadByUserName: " + user);
         if (user == null) {
             throw new UsernameNotFoundException("User with name = " + name + " is not found");
         }

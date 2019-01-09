@@ -28,26 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier(value = "customUserDetailService")
     private UserDetailsService userDetailsService;
 
-    /*@Autowired
-    private AuthenticationEntryPoint entryPoint;*/
 
-    //@Autowired
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordencoder());
     }
-
-
-
-    //пробовал и так
-    //@Autowired
-    /*@Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        logger.info("Call AMB");
-        auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("tom").password("abc123").roles("USER");
-    }*/
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

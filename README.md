@@ -222,7 +222,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 может проголосовать послав запрос вида
 
-    curl -X POST http://host:port/voteforlunch/api/v1/public/vote/{restaurant_id}
+    curl -X POST http://host:port/voteforlunch/api/v1/profile/vote/{restaurant_id}
 
 Результаты голосования доступны по адресу
 

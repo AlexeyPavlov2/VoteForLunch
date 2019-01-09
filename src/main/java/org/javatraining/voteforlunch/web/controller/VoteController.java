@@ -21,7 +21,7 @@ import java.time.LocalTime;
 @RequestMapping(value = VoteController.REST_URL)
 public class VoteController {
     private static final Logger logger = LoggerFactory.getLogger(VoteController.class);
-    static final String REST_URL = "/vote";
+    static final String REST_URL = "/profile";
 
     @Autowired
     private VoteRepository voteRepository;
@@ -32,7 +32,7 @@ public class VoteController {
     @Autowired
     private RestaurantService restaurantService;
 
-    @PostMapping("/{restaurantId}")
+    @PostMapping("/vote/{restaurantId}")
     @ResponseStatus(value = HttpStatus.OK)
     public void doVote(@PathVariable("restaurantId") int restaurantId ) {
         logger.info("Vote!");

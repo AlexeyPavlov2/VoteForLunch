@@ -1,8 +1,8 @@
 package org.javatraining.voteforlunch.service.user;
 
-import org.javatraining.voteforlunch.TestUtil;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.User;
+import org.javatraining.voteforlunch.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,10 +1,10 @@
 package org.javatraining.voteforlunch.service.dish;
 
 
-import org.javatraining.voteforlunch.TestUtil;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Dish;
 import org.javatraining.voteforlunch.service.restaurant.RestaurantService;
+import org.javatraining.voteforlunch.util.TestUtil;
 import org.javatraining.voteforlunch.util.entity.DishUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static org.javatraining.voteforlunch.util.DishTestData.DISHES;
-import static org.javatraining.voteforlunch.util.DishTestData.NEW_DISH;
-import static org.javatraining.voteforlunch.util.DishTestData.NEW_DISH_ID;
-import static org.junit.Assert.*;
+import static org.javatraining.voteforlunch.util.DishTestData.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringRunner.class)

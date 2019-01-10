@@ -12,25 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-/*
 @Configuration
-public class JacksonObjectMapper {
-    @Bean
-    @Primary
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-//        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
-        return objectMapper;
-    }
-}
-*/
-
-//@Configuration
 public class JacksonObjectMapper extends ObjectMapper {
-  /*  private static final Logger logger = LoggerFactory.getLogger(JacksonObjectMapper.class);
+    private static final Logger logger = LoggerFactory.getLogger(JacksonObjectMapper.class);
     private static ObjectMapper mapper = new ObjectMapper();
 
     public JacksonObjectMapper() {
@@ -38,6 +23,7 @@ public class JacksonObjectMapper extends ObjectMapper {
         mapper.registerModule(new Hibernate5Module());
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
 
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -49,5 +35,5 @@ public class JacksonObjectMapper extends ObjectMapper {
     public static ObjectMapper getMapper() {
         logger.info("Get object mapper");
         return mapper;
-    }*/
+    }
 }

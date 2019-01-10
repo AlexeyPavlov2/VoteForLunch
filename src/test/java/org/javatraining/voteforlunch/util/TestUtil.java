@@ -1,6 +1,4 @@
-package org.javatraining.voteforlunch;
-
-import org.javatraining.voteforlunch.model.User;
+package org.javatraining.voteforlunch.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,11 +1,11 @@
 package org.javatraining.voteforlunch.service.menu_item;
 
-import org.javatraining.voteforlunch.TestUtil;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Dish;
 import org.javatraining.voteforlunch.model.MenuItem;
 import org.javatraining.voteforlunch.service.dish.DishService;
 import org.javatraining.voteforlunch.service.restaurant.RestaurantService;
+import org.javatraining.voteforlunch.util.TestUtil;
 import org.javatraining.voteforlunch.util.entity.MenuItemAdminUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static org.javatraining.voteforlunch.util.DishTestData.DISHES;
 import static org.javatraining.voteforlunch.util.MenuItemTestData.*;
 import static org.javatraining.voteforlunch.util.RestaurantTestData.RESTAURANT_1_ID;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

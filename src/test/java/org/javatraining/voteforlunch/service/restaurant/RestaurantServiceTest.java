@@ -1,8 +1,8 @@
 package org.javatraining.voteforlunch.service.restaurant;
 
-import org.javatraining.voteforlunch.TestUtil;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Restaurant;
+import org.javatraining.voteforlunch.util.TestUtil;
 import org.javatraining.voteforlunch.util.entity.RestaurantUtil;
 import org.junit.Before;
 import org.junit.Test;

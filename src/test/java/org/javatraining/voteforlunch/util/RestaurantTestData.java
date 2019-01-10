@@ -1,15 +1,13 @@
 package org.javatraining.voteforlunch.util;
 
+import org.javatraining.voteforlunch.dto.ResultObject;
 import org.javatraining.voteforlunch.model.Restaurant;
-import org.javatraining.voteforlunch.model.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.javatraining.voteforlunch.util.DateTimeUtil.stringToDate;
 import static org.javatraining.voteforlunch.util.DishTestData.DISHES;
 
 public class RestaurantTestData {
@@ -84,6 +82,11 @@ public class RestaurantTestData {
         RESTAURANT_4.setDishes(new ArrayList<>(DISHES.entrySet().stream().filter(el -> el.getKey() <= 41 & el.getKey() > 25).map(x -> x.getValue()).collect(Collectors.toList())));
         RESTAURANT_5.setDishes(new ArrayList<>(DISHES.entrySet().stream().filter(el -> el.getKey() <= 50 & el.getKey() > 41).map(x -> x.getValue()).collect(Collectors.toList())));
     }
+
+    public final static List<ResultObject> VOTES_RESULT_20181229 = new ArrayList() {{
+        add(new ResultObject(RESTAURANT_2.getName(), 2L));
+        add(new ResultObject(RESTAURANT_1.getName(), 1L));
+    }};
 
 
 }

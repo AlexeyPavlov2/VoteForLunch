@@ -141,7 +141,16 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 Также для администраторов системы доступна консоль базы данных H2 по адресу:
 
-    http://host:port/voteforlunch/api/v1/admin/h2
+    http://localhost:8080/voteforlunch/api/v1/admin/h2
+    
+сервисы Spring актуатора:
+
+    http://localhost:8080/voteforlunch/api/v1/admin/service/beans (...metrics)
+    
+и статистика таблиц базы данных:
+
+    http://localhost:8080/voteforlunch/api/v1/admin/service/info
+    
 
 &#x1F534;  **Ресурсы, находящиеся по пути** **_http:<i></i>//host:port/voteforlunch/api/v1/admin/_**, **доступны только для пользователей с ролью ADMIN**  
 

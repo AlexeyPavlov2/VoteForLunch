@@ -1,10 +1,10 @@
 package org.javatraining.voteforlunch.util;
 
-import org.hibernate.engine.internal.Collections;
 import org.javatraining.voteforlunch.model.Dish;
 import org.javatraining.voteforlunch.model.Restaurant;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.javatraining.voteforlunch.util.RestaurantTestData.*;
 

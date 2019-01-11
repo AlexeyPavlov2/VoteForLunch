@@ -15,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 
 @Configuration
@@ -37,11 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.csrf().disable().headers().frameOptions().disable().and()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/register/**", "/public", "/resource/**").permitAll()
+                .antMatchers("/", "/login", "/register/**", "/public", "/resource/**"/*, "/db/h2/**"*/).permitAll()
                 .antMatchers("/profile/vote").hasRole("USER")
-                .antMatchers("/admin/**", "/service/**").hasRole("ADMIN")
+                .antMatchers("/admin/**", "/admin/service/**", "/admin/h2/**").hasRole("ADMIN")
                 .and()
                 .httpBasic()
                 .realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())

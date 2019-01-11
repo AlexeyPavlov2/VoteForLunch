@@ -2,6 +2,8 @@ package org.javatraining.voteforlunch.util.entity;
 
 import org.javatraining.voteforlunch.dto.UserDto;
 import org.javatraining.voteforlunch.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +40,13 @@ public class UserUtil {
         return new User(user.getId(), user.getName(), user.getEmail(), user.getPassword(),
                 user.getRegistered(), user.isEnabled(), new ArrayList(user.getRoles()));
     }
+
+    public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
+        String password = user.getPassword();
+        user.setPassword(StringUtils.isEmpty(password) ? password : passwordEncoder.encode(password));
+        return user;
+    }
+
 
 
 

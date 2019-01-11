@@ -42,7 +42,6 @@ public class PublicController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<MenuDtoForUser> getMenu(@PathVariable("date") String date) {
         logger.info("Get the menu for the specified date");
-        // Поскольку ObjectMapper у меня толком не заработал...
         List<MenuItem> menuItems = menuItemService.readByDate(DateTimeUtil.getParseDateString(date));
         if (menuItems.isEmpty()) {
             throw new NotFoundException("No menu found for this date.");

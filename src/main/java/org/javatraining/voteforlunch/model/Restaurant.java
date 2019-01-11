@@ -1,16 +1,15 @@
 package org.javatraining.voteforlunch.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @Entity
 @Table(name = "restaurant")
@@ -62,9 +61,5 @@ public class Restaurant {
 
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Vote> votes;
-
-
-
-
 
 }

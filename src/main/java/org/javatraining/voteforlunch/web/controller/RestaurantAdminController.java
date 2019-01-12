@@ -17,7 +17,6 @@ import org.javatraining.voteforlunch.util.entity.RestaurantUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -196,7 +195,7 @@ public class RestaurantAdminController {
         return menuItemAdminUtil.createDtoFromEntity(menuItem);
 
     }
-    @PostMapping("/{id}/menu/{date}/menuitems/")
+    @PostMapping("/{id}/menu/{date}/menuitems")
     @ResponseStatus(value = HttpStatus.OK)
     public MenuItemAdminDto addMenuItem(@PathVariable("id") int id,
                                         @PathVariable("date") String date, @Validated @RequestBody  MenuItemAdminDto dto) {

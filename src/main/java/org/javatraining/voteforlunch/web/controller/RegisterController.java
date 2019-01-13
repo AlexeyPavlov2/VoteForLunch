@@ -12,21 +12,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-
 import java.net.URI;
 
 import static org.javatraining.voteforlunch.util.entity.UserUtil.createDtoFrom;
 import static org.javatraining.voteforlunch.util.entity.UserUtil.createUserFromDto;
 
 @RestController
-@RequestMapping(value = LoginController.REST_URL)
-public class LoginController {
+@RequestMapping(value = RegisterController.REST_URL)
+public class RegisterController {
     static final String REST_URL = "/public/register";
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     private final UserService userService;
 
     @Autowired
-    public LoginController(UserService userService) {
+    public RegisterController(UserService userService) {
         this.userService = userService;
     }
 

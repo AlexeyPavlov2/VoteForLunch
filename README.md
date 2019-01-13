@@ -109,7 +109,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
     - port - в демо-приложении 8080  
     - voteforlunch - имя сервиса
     - host:port/api/v1 - URL к REST API
-    - host:port/api/v1/register - URL регистрации нового пользователя
+    - host:port/api/v1/public/register - URL регистрации нового пользователя
     - host:port/api/v1/login - URL для входа пользователя в систему
     - host:port/api/v1/admin - ресурсы для администрирования системы
     - host:port/api/v1/admin/commands - ресурс командного интерфейса для администратора
@@ -253,8 +253,16 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | **/public/menu/{date}**   | - | Получить меню ресторанов на указаннную дату | - |
 | **/public/votes/{date}/votingresults**   | - | Получить результаты голосования на указаннную дату | - |
+| **/public/register**   | Создать нового пользователя | - | - |
 
 
+Пользователь может зарегистрировать себя в сервисе командой:
+
+    $ curl --header 'Content-Type: application/json' -X POST --data '{"id":0,"name":"diana", "email":"diana@gmail.com","password":"password", "enabled":true}' http://localhost:8080/voteforlunch/api/v1/public/register
+
+Возвращается данные созданного пользователя:
+
+    {"id" : 5,"name" : "diana","email" : "diana@gmail.com","password" : "$2a$10$mEU7zurPrMaCFnczpK1Y3ugevic1X87.aYd9jRf9uK2Q01JfnJdhS","enabled" : true}
 
 Пользователь, получив предварительно данные для выбора ресторана по адресу  
 

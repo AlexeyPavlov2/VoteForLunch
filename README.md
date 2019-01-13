@@ -120,7 +120,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 Форматы результатов запросов даны в виде примеров работы с curl.
 Следут помнить, что запросы **curl** должны содержать имя и пароль, например
 
-**_curl http:<i></i>//localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/20181228/menuitems -u alex:qwerty2_**
+**_curl http:<i></i>//localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems -u alex:qwerty2_**
     
 В демо-приложении существуют следующие пользователи:
 
@@ -217,7 +217,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| **/public/menu/{date}**, где date-требуемая дата в формате yyyymmdd  | - | Получить меню на дату | - | - |
+| **/public/menu/{date}**, где date-требуемая дата в формате yyyy-mm-dd  | - | Получить меню на дату | - | - |
 
 [Пример работы с curl](#menuserexample)
 
@@ -231,8 +231,10 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | **/votes**  | - | Получить всю историю голосований | Удалить всю историю голосований |
-| **/votes/{date}**, где date - дата в формат yyyymmdd |	- |	Получить данные о голосовании на указанную дату| - | Удалить историю голосования на указанную дату |
+| **/votes/{date}**, где date - дата в формат yyyy-mm-dd |	- |	Получить данные о голосовании на указанную дату| - | Удалить историю голосования на указанную дату |
 
+
+[Пример работы с curl:](#votesadminexample)
 
 
 Для зарегистрированных пользователей:  
@@ -270,7 +272,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
     
 Например, получить результаты голосования на 28.12.2018  
 
-     curl http://localhost:8080/voteforlunch/api/v1/public/votes/20181228/votingresults
+     curl http://localhost:8080/voteforlunch/api/v1/public/votes/2018-12-28/votingresults
      
 Получим
 
@@ -559,7 +561,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 **Получить сведения о меню ресторана на указанную дату:**
   
-    curl http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/20181228/menuitems
+    curl http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems
 
 **Возвращает:**
 
@@ -567,11 +569,11 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 **Удалить меню указанного ресторана на указанную дату:**
   
-    curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/20181228/menuitems
+    curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems
 
 **Создать пункт меню меню указанного ресторана на указанную дату с указанным блюдом с указанной стоимостью:**
   
-     curl --header "Content-Type: application/json" --request POST --data '{"id":0,"date":"2018-12-28","restaurant_id":1,"dish_id":4,"price": 23.56}' http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/20181228/menuitems/
+     curl --header "Content-Type: application/json" --request POST --data '{"id":0,"date":"2018-12-28","restaurant_id":1,"dish_id":4,"price": 23.56}' http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems/
 
 **Возвращает:**
 
@@ -583,7 +585,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 **Получить меню на указанную дату:**
   
-     curl  http://localhost:8080/voteforlunch/api/v1/public/menu/20181228
+     curl  http://localhost:8080/voteforlunch/api/v1/public/menu/2018-12-28
 
 **Возвращает:**
 ```json
@@ -686,5 +688,33 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
         }
     ]
 ```    
+
+<a name="votesadminexample"></a>
+**Примеры работы с curl для ресурса** **_http:<i></i>//host:port/voteforlunch/api/v1/admin/votes:_** 
+
+**Получить всю историю голосований:**
+     
+     curl http://localhost:8080/voteforlunch/api/v1/admin/votes 
+          
+**Возвращает:**
+
+     [{"id":1,"datev":"2018-12-28T00:00:00","user_id":1,"restaurant_id":1},{"id":2,"datev":"2018-12-28T00:00:00","user_id":2,"restaurant_id":1},{"id":3,"datev":"2018-12-28T00:00:00","user_id":3,"restaurant_id":2},{"id":4,"datev":"2018-12-28T00:00:00","user_id":3,"restaurant_id":1},{"id":5,"datev":"2018-12-29T00:00:00","user_id":1,"restaurant_id":2},{"id":6,"datev":"2018-12-29T00:00:00","user_id":2,"restaurant_id":1},{"id":7,"datev":"2018-12-29T00:00:00","user_id":3,"restaurant_id":2}]
+
+**Получить историю голосований на дату:**
+     
+     curl http://localhost:8080/voteforlunch/api/v1/admin/votes/2018-12-28 
+          
+**Возвращает:**
+
+     [{"id":1,"datev":"2018-12-28T00:00:00","user_id":1,"restaurant_id":1},{"id":2,"datev":"2018-12-28T00:00:00","user_id":2,"restaurant_id":1},{"id":3,"datev":"2018-12-28T00:00:00","user_id":3,"restaurant_id":2},{"id":4,"datev":"2018-12-28T00:00:00","user_id":3,"restaurant_id":1}]
+     
+ **Удалить всю историю голосований:**
+      
+      curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/votes
+      
+**Удалить историю голосований на указанную дату:**
+      
+      curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/votes/2018-12-28
+
 
 

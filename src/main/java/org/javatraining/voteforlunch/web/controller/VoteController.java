@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +41,7 @@ public class VoteController {
         LocalDateTime dateTime = LocalDateTime.now();
         LocalDateTime expiredDateTime = LocalDateTime.now().with(LocalTime.of(11, 0));
         if (dateTime.isAfter(expiredDateTime)) {
-            throw new TimeExpiredExeption("User can vote until 11 am");
+            throw new TimeExpiredExeption("User can vote no later than 11 am");
         }
 
         String currentUserName = "";

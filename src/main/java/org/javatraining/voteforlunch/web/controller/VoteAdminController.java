@@ -2,17 +2,15 @@ package org.javatraining.voteforlunch.web.controller;
 
 import org.javatraining.voteforlunch.dto.VoteDto;
 import org.javatraining.voteforlunch.exception.NotFoundException;
-import org.javatraining.voteforlunch.model.Vote;
 import org.javatraining.voteforlunch.repository.VoteRepository;
-import org.javatraining.voteforlunch.util.DateTimeUtil;
 import org.javatraining.voteforlunch.util.entity.VoteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,9 +35,9 @@ public class VoteAdminController {
 
     @DeleteMapping(value = "/{date}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteByDate(@PathVariable("date") String date) {
+    public void deleteByDate(@PathVariable("date") LocalDate date) {
         logger.info("Delete by date");
-        LocalDateTime localDateTime = DateTimeUtil.getParseDateString(date).atStartOfDay();
+        LocalDateTime localDateTime = date.atStartOfDay();
         if (!voteRepository.existsVotesByDatev(localDateTime)) {
             throw new NotFoundException("No votes found for this date.");
         }
@@ -54,8 +52,8 @@ public class VoteAdminController {
 
     @GetMapping(value = "/{date}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<VoteDto> getAllByDate(@PathVariable("date") String date) {
-        LocalDateTime dateTime = DateTimeUtil.getParseDateString(date).atStartOfDay();
+    public List<VoteDto> getAllByDate(@PathVariable("date") LocalDate date) {
+        LocalDateTime dateTime = date.atStartOfDay();
         if (!voteRepository.existsVotesByDatev(dateTime)) {
             throw new NotFoundException("No votes found for this date.");
         }

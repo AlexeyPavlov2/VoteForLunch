@@ -10,7 +10,6 @@ import org.javatraining.voteforlunch.model.Restaurant;
 import org.javatraining.voteforlunch.service.dish.DishService;
 import org.javatraining.voteforlunch.service.menu_item.MenuItemService;
 import org.javatraining.voteforlunch.service.restaurant.RestaurantService;
-import org.javatraining.voteforlunch.util.DateTimeUtil;
 import org.javatraining.voteforlunch.util.entity.DishUtil;
 import org.javatraining.voteforlunch.util.entity.MenuItemAdminUtil;
 import org.javatraining.voteforlunch.util.entity.RestaurantUtil;
@@ -170,27 +169,26 @@ public class RestaurantAdminController {
     @GetMapping("/{id}/menu/{date}/menuitems")
     @ResponseStatus(value = HttpStatus.OK)
     public List<MenuItemAdminDto> getMenu(@PathVariable("id") int id,
-                                          @PathVariable("date") String date) {
+                                          @PathVariable("date") LocalDate date) {
         logger.info("Get menu");
-        List<MenuItem> menuItems = menuItemService.readByDateAndRestaurant(id,
-                DateTimeUtil.getParseDateString(date));
+        List<MenuItem> menuItems = menuItemService.readByDateAndRestaurant(id, date);
         return menuItemAdminUtil.createDtoListFromEntityList(menuItems);
     }
 
     @DeleteMapping("/{id}/menu/{date}/menuitems") //{menuitem_id}
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteMenu(@PathVariable("id") int id,
-                                          @PathVariable("date") String date) {
+                                          @PathVariable("date") LocalDate date) {
         logger.info("Delete menu");
-        menuItemService.deleteByDateAndRestaurant(id, DateTimeUtil.getParseDateString(date));
+        menuItemService.deleteByDateAndRestaurant(id, date);
     }
 
     @GetMapping("/{id}/menu/{date}/menuitems/{menuItemsId}")
     @ResponseStatus(value = HttpStatus.OK)
     public MenuItemAdminDto getMenuItem(@PathVariable("id") int id,
-                                          @PathVariable("date") String date, @PathVariable("menuItemsId") int menuItemsId) {
+                                          @PathVariable("date") LocalDate date, @PathVariable("menuItemsId") int menuItemsId) {
         logger.info("Get menu item");
-        MenuItem menuItem = menuItemService.readByDateAndRestaurant(id, DateTimeUtil.getParseDateString(date))
+        MenuItem menuItem = menuItemService.readByDateAndRestaurant(id, date)
                 .stream().filter(el -> el.getId().equals(menuItemsId)).findFirst().orElseThrow(() -> new NotFoundException("Not dound menu items with id = " + menuItemsId));
         return menuItemAdminUtil.createDtoFromEntity(menuItem);
 
@@ -198,9 +196,9 @@ public class RestaurantAdminController {
     @PostMapping("/{id}/menu/{date}/menuitems")
     @ResponseStatus(value = HttpStatus.OK)
     public MenuItemAdminDto addMenuItem(@PathVariable("id") int id,
-                                        @PathVariable("date") String date, @Validated @RequestBody  MenuItemAdminDto dto) {
+                                        @PathVariable("date") LocalDate date, @Validated @RequestBody  MenuItemAdminDto dto) {
         logger.info("Create new menu item menu item");
-        LocalDate dateFromPath = DateTimeUtil.getParseDateString(date);
+        LocalDate dateFromPath = date;
         LocalDate dateFromDto = dto.getDate();
         if (!dateFromDto.equals(dateFromPath)) {
             throw new NotFoundException("Dates must be the same.");
@@ -213,9 +211,9 @@ public class RestaurantAdminController {
     @DeleteMapping("/{id}/menu/{date}/menuitems/{menuItemsId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteMenuItem(@PathVariable("id") int id,
-                                        @PathVariable("date") String date, @PathVariable("menuItemsId") int menuItemsId) {
+                                        @PathVariable("date") LocalDate date, @PathVariable("menuItemsId") int menuItemsId) {
         logger.info("Delete menu item");
-        MenuItem menuItem = menuItemService.readByDateAndRestaurant(id, DateTimeUtil.getParseDateString(date))
+        MenuItem menuItem = menuItemService.readByDateAndRestaurant(id, date)
                 .stream().filter(el -> el.getId().equals(menuItemsId)).findFirst().orElseThrow(() -> new NotFoundException("Not found menu items with id = " + menuItemsId));
         menuItemService.delete(menuItem.getId());
     }

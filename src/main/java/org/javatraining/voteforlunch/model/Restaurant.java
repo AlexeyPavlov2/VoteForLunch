@@ -1,5 +1,6 @@
 package org.javatraining.voteforlunch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,12 +54,15 @@ public class Restaurant {
     @Size(max = 50)
     private String phones;
 
+    @JsonIgnore
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Dish> dishes;
 
+    @JsonIgnore
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<MenuItem> menuItems;
 
+    @JsonIgnore
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Vote> votes;
 

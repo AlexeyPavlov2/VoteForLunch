@@ -38,17 +38,17 @@ public class UserServiceTest {
 
     @Test
     public void create() {
-        TestUtil.assertMatch(service.create(createUserFromAnother(USER_5)), USER_5, "registered", "roles");
+        TestUtil.assertMatch(service.create(createUserFromAnother(USER_5)), USER_5, "registered", "roles", "password");
     }
 
     @Test
     public void read() {
-        TestUtil.assertMatch(service.read(1), USER_1, "registered", "roles");
+        TestUtil.assertMatch(service.read(1), USER_1, "registered", "roles", "password");
     }
 
     @Test
     public void readAll() {
-        TestUtil.assertMatch(service.readAll(), USERS, "registered", "roles");
+        TestUtil.assertMatch(service.readAll(), USERS, "registered", "roles", "password");
     }
 
     @Test(expected = NotFoundException.class)
@@ -74,7 +74,7 @@ public class UserServiceTest {
         service.delete(USER_1_ID);
         List<User> actual = service.readAll();
         List<User> expected = new ArrayList<>(USERS.subList(1, 4));
-        TestUtil.assertMatch(actual, expected,"registered", "roles");
+        TestUtil.assertMatch(actual, expected,"registered", "roles", "password");
     }
 
     @Test(expected = NotFoundException.class)

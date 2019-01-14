@@ -88,7 +88,7 @@ public class RoleServiceTest {
 
     @Test
     public void readByName() {
-        TestUtil.assertMatch(service.readByName("ADMIN"), ROLE_2);
+        TestUtil.assertMatch(service.readByName("ROLE_ADMIN"), ROLE_2);
     }
 
     @Test(expected = NotFoundException.class)

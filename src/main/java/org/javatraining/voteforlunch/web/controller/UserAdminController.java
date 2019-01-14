@@ -75,7 +75,6 @@ public class UserAdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<UserDto> getByFilterNameLike(@RequestParam(value = "name", required = true) String name) {
         logger.info("Get users filtering by name {}", name);
-        System.out.println("NAME::: " + name);
         var userList = userService.readByNameLike(name);
         return userList != null ? createDtoListFromUserList(userList) : Collections.emptyList();
     }

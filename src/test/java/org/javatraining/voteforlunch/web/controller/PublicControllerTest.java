@@ -1,8 +1,10 @@
 package org.javatraining.voteforlunch.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javatraining.voteforlunch.service.restaurant.RestaurantService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 
 import static org.javatraining.voteforlunch.util.UserTestData.USER_2;
@@ -13,11 +15,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PublicControllerTest extends AbstractControllerTest {
     private String REST_URL = "/public";
-    private String DATE_PART = "20181229";
-    private String DATE_PART_WRONG = "20181220";
+    private String DATE_PART = "2018-12-29";
+    private String DATE_PART_WRONG = "2018-12-20";
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    @Qualifier("getMapper")
+    private ObjectMapper mapper;
 
     @Test
     public void getMenuNotFound() throws Exception {
@@ -31,25 +37,11 @@ public class PublicControllerTest extends AbstractControllerTest {
     @Test
     public void getMenu() throws Exception {
         System.out.println("USER:   " + USER_2);
-     //   System.out.println("REST: " + RESTAURANT_1);
         mockMvc.perform(get(REST_URL + "/menu/" + DATE_PART))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
-    /*@Test
-    public void getVotesResults() throws Exception {
-        mockMvc.perform(get(REST_URL + "/votes/" + DATE_PART + "/votingresults"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(getToMatcherForResultObject(VOTES_RESULT_20181229));
 
-
-    }*/
-
-
-    /*private static ResultMatcher getToMatcherForResultObject(Iterable<ResultObject> expected) {
-        //return result -> assertThat(readListFromJsonMvcResult(result, ResultObject.class)).isEqualTo(expected);
-    }*/
 }

@@ -7,39 +7,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @EnableWebMvc
 @Configuration
-public class CustomObjectMapper implements WebMvcConfigurer {
+public class CustomObjectMapper  {
     private static final Logger logger = LoggerFactory.getLogger(CustomObjectMapper.class);
+    private ObjectMapper webObjectMapper = new ObjectMapper();
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public CustomObjectMapper() {
         logger.info("Object Mapper registered");
-        ObjectMapper webObjectMapper = objectMapper.copy();
         webObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-        webObjectMapper.registerModule(new Hibernate5Module());
-        webObjectMapper.registerModule(new JavaTimeModule());
+        webObjectMapper.registerModules(new Hibernate5Module(), new JavaTimeModule(), new Jdk8Module());
         webObjectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         webObjectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         webObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         webObjectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		webObjectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        webObjectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
         webObjectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        converters.add(new MappingJackson2HttpMessageConverter(webObjectMapper));
     }
+
+    @Bean
+    @Primary
+    public ObjectMapper getMapper() {
+        return webObjectMapper;
+    }
+
+
 }

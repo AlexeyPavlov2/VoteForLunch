@@ -1,11 +1,11 @@
 package org.javatraining.voteforlunch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,6 +24,7 @@ public class Role implements GrantedAuthority {
     @Size(min=3, message="Name should have at least 3 characters")
     private String name;
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return name;

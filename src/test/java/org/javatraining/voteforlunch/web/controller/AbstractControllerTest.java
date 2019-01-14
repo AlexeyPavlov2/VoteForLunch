@@ -1,6 +1,5 @@
 package org.javatraining.voteforlunch.web.controller;
 
-import org.javatraining.voteforlunch.service.user.UserService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @SpringBootTest
 @EnableWebMvc
 @Transactional
-public class AbstractControllerTest {
+public abstract class AbstractControllerTest {
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
 
     static {
@@ -34,10 +33,6 @@ public class AbstractControllerTest {
 
     @Autowired
     private CacheManager cacheManager;
-
-
-    @Autowired
-    protected UserService userService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;

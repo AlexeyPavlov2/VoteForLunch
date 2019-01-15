@@ -1,28 +1,19 @@
 package org.javatraining.voteforlunch.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import org.javatraining.voteforlunch.dto.UserDto;
 import org.javatraining.voteforlunch.exception.NotFoundException;
-import org.javatraining.voteforlunch.model.Role;
 import org.javatraining.voteforlunch.service.user.UserService;
 import org.javatraining.voteforlunch.util.entity.UserUtil;
+import org.javatraining.voteforlunch.util.json.JsonUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.javatraining.voteforlunch.util.RoleTestData.ROLE_2_ID;
 import static org.javatraining.voteforlunch.util.TestUtil.assertMatch;
 import static org.javatraining.voteforlunch.util.UserTestData.*;
@@ -35,11 +26,10 @@ public class UserAdminControllerTest extends AbstractControllerTest {
     private String REST_URL = "/admin/users";
 
     @Autowired
-    @Qualifier("getMapper")
-    private ObjectMapper mapper;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private JsonUtil util;
 
     @Test
     public void testGetUnAuth() throws Exception {
@@ -54,7 +44,7 @@ public class UserAdminControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_URL + "/" + USER_1_ID))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertMatch(readFromJsonMvcResult(result, UserDto.class),
+                .andExpect(result -> assertMatch(util.readFromJsonMvcResult(result, UserDto.class),
                         UserUtil.createDtoFrom(userService.read(USER_1_ID))));
     }
 
@@ -65,7 +55,7 @@ public class UserAdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getToMatcher(UserUtil.createDtoListFromUserList(userService.readAll())));
+                .andExpect(util.getToMatcher(UserUtil.createDtoListFromUserList(userService.readAll())));
     }
 
     @Test
@@ -77,7 +67,7 @@ public class UserAdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getToMatcher(expected));
+                .andExpect(util.getToMatcher(expected));
     }
 
     @Test
@@ -89,7 +79,7 @@ public class UserAdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getToMatcher(expected));
+                .andExpect(util.getToMatcher(expected));
     }
 
     @Test
@@ -101,7 +91,7 @@ public class UserAdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getToMatcher(expected));
+                .andExpect(util.getToMatcher(expected));
     }
 
     @Test
@@ -114,7 +104,7 @@ public class UserAdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getToMatcher(expected));
+                .andExpect(util.getToMatcher(expected));
     }
 
     @Test
@@ -123,10 +113,10 @@ public class UserAdminControllerTest extends AbstractControllerTest {
         UserDto expected = UserUtil.createDtoFrom(USER_5);
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeValue(expected)))
+                .content(util.writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isCreated());
-        UserDto actual = readFromJsonResultActions(action, UserDto.class);
+        UserDto actual = util.readFromJsonResultActions(action, UserDto.class);
         assertMatch(actual, expected, "password", "registered", "roles");
     }
 
@@ -146,10 +136,10 @@ public class UserAdminControllerTest extends AbstractControllerTest {
         expected.setEmail("updated" + USER_2.getEmail());
         ResultActions action = mockMvc.perform(put(REST_URL + "/" + USER_2_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeValue(expected)))
+                .content(util.writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isOk());
-        UserDto actual = readFromJsonResultActions(action, UserDto.class);
+        UserDto actual = util.readFromJsonResultActions(action, UserDto.class);
         assertMatch(actual, expected, "password", "registered", "roles");
     }
 
@@ -188,69 +178,5 @@ public class UserAdminControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
         userService.read(USER_3_ID);
     }
-
-
-
-
-
-
-
-
-    public <T> String writeValue(T obj) {
-        try {
-            return mapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
-        }
-    }
-
-    public <T> T readValue(String json, Class<T> clazz) {
-        try {
-            return mapper.readValue(json, clazz);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Invalid read from JSON:\n'" + json + "'", e);
-        }
-    }
-
-    public <T> List<T> readValues(String json, Class<T> clazz) {
-        ObjectReader reader = mapper.readerFor(clazz);
-        try {
-            return reader.<T>readValues(json).readAll();
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Invalid read array from JSON:\n'" + json + "'", e);
-        }
-    }
-
-
-    public <T> T readFromJsonMvcResult(MvcResult result, Class<T> clazz) throws UnsupportedEncodingException {
-        return readValue(getContent(result), clazz);
-    }
-
-
-    public String getContent(MvcResult result) throws UnsupportedEncodingException {
-        return result.getResponse().getContentAsString();
-    }
-
-    public <T> List<T> readListFromJsonMvcResult(MvcResult result, Class<T> clazz) throws UnsupportedEncodingException {
-        return readValues(getContent(result), clazz);
-    }
-
-    public <T> ResultMatcher getToMatcher(T... expected) {
-        return getToMatcher(List.of(expected));
-    }
-
-    public <T> T readFromJsonResultActions(ResultActions action, Class<T> clazz) throws UnsupportedEncodingException {
-        return readFromJsonMvcResult(action.andReturn(), clazz);
-    }
-
-
-    public ResultMatcher getToMatcher(Iterable<UserDto> expected) {
-        return result -> assertThat(readListFromJsonMvcResult(result, UserDto.class)).isEqualTo(expected);
-    }
-
-    public ResultMatcher getToMatcherRoles(Iterable<Role> expected) {
-        return result -> assertThat(readListFromJsonMvcResult(result, Role.class)).isEqualTo(expected);
-    }
-
 
 }

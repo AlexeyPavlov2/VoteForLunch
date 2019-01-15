@@ -1,14 +1,16 @@
 package org.javatraining.voteforlunch.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.bytebuddy.asm.Advice;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResultObject {
+    @JsonProperty("restaurantName")
     private String restaurantName;
+
     private Long votes;
 }

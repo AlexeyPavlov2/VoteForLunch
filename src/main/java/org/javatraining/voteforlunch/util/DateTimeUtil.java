@@ -1,7 +1,6 @@
 package org.javatraining.voteforlunch.util;
 
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +30,7 @@ public class DateTimeUtil {
     }
 
     public static LocalDate getParseDateString(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public static String toString(LocalDateTime ldt) {

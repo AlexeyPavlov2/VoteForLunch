@@ -1,8 +1,12 @@
 package org.javatraining.voteforlunch.service.menu_item;
 
+import org.javatraining.voteforlunch.dto.DishDtoForUser;
+import org.javatraining.voteforlunch.dto.MenuDtoForUser;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.MenuItem;
+import org.javatraining.voteforlunch.model.Restaurant;
 import org.javatraining.voteforlunch.repository.MenuItemRepository;
+import org.javatraining.voteforlunch.util.entity.RestaurantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -11,9 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @CacheConfig(cacheNames = "menuItems")
@@ -98,5 +101,24 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Transactional
     public void deleteAll() {
         menuItemRepository.deleteAll();
+    }
+
+    public List<MenuDtoForUser> getMenuForDate(LocalDate date) {
+        List<MenuItem> menuItems = readByDate(date);
+        if (menuItems.isEmpty()) {
+            throw new NotFoundException("No menu found for this date.");
+        }
+        Map<Restaurant, List<MenuItem>> collect = menuItems.stream()
+                .collect(Collectors.groupingBy(MenuItem::getRestaurant));
+        List<MenuDtoForUser> list = new ArrayList<>();
+        collect.entrySet().forEach(el -> {
+            List<DishDtoForUser> collect1 = el.getValue().stream().map(el1 -> new DishDtoForUser(el1.getDish().getId(), el1.getDish().getName(),
+                    el1.getDish().getDescription(), el1.getPrice())).sorted(Comparator.comparing(DishDtoForUser::getId)).collect(Collectors.toList());
+            list.add(new MenuDtoForUser(date,
+                    RestaurantUtil.createDtoFrom(el.getKey()), collect1));
+        });
+
+        return list.stream().sorted(Comparator.comparing(el -> el.getRestaurant().getId())).collect(Collectors.toList());
+
     }
 }

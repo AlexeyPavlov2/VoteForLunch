@@ -3,6 +3,7 @@ package org.javatraining.voteforlunch.util.converter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,6 +32,7 @@ public class CustomObjectMapper  {
         webObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         webObjectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         webObjectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        webObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         webObjectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 

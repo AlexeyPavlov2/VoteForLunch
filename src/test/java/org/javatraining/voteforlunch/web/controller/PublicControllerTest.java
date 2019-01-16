@@ -23,8 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PublicControllerTest extends AbstractControllerTest {
     private String REST_URL = "/public";
-    private String DATE_PART = "2018-12-29";
-    private String DATE_PART_WRONG = "2018-12-20";
 
     @Autowired
     private VoteRepository voteRepository;

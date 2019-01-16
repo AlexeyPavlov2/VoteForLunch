@@ -22,6 +22,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @EnableWebMvc
 @Transactional
 public abstract class AbstractControllerTest {
+    protected String DATE_PART = "2018-12-29";
+    protected String DATE_PART_WRONG = "2018-12-20";
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
 
     static {

@@ -20,6 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -134,7 +135,7 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
     @Test
     @WithMockUser(username = "alex", password = "qwerty2", roles = {"USER", "ADMIN"})
     public void getDishes() throws Exception {
-        List<DishDto> expected = DishUtil.createDtoListFromDishList(restaurantService.read(RESTAURANT_1_ID).getDishes());
+        List<DishDto> expected = DishUtil.createDtoListFromDishList(new ArrayList(restaurantService.read(RESTAURANT_1_ID).getDishes()));
         MvcResult result = mockMvc.perform(get(REST_URL + "/" + RESTAURANT_1_ID + "/dishes")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -163,7 +164,7 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
         mockMvc.perform(delete(REST_URL + "/" + RESTAURANT_2_ID + "/dishes"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        Assert.assertTrue(restaurantService.getDishByRestaurantId(RESTAURANT_2_ID).isEmpty());
+        Assert.assertTrue(restaurantService.read(RESTAURANT_2_ID).getDishes().isEmpty());
     }
 
     @Test(expected = NotFoundException.class)

@@ -1,5 +1,6 @@
 package org.javatraining.voteforlunch.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,15 +23,13 @@ public class MenuItem implements Serializable {
     private Integer id;
 
     @NotNull
-    //@JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate datei;
 
-    //@JsonIgnore
     @ManyToOne(optional=false, fetch = FetchType.LAZY)
     @JoinColumn (name="restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    //@JsonIgnore
     @ManyToOne(optional=false, fetch = FetchType.LAZY)
     @JoinColumn (name="dish_id", nullable = false)
     private Dish dish;

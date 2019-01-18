@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -56,14 +56,14 @@ public class Restaurant {
 
     @JsonIgnore
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Dish> dishes;
+    private Set<Dish> dishes;
 
     @JsonIgnore
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<MenuItem> menuItems;
+    private Set<MenuItem> menuItems;
 
     @JsonIgnore
     @OneToMany (mappedBy="restaurant", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Vote> votes;
+    private Set<Vote> votes;
 
 }

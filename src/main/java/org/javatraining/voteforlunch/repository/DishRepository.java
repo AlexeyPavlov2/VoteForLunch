@@ -28,4 +28,6 @@ public interface DishRepository extends JpaRepository<Dish, Integer> {
     List<Dish> getDishByRestaurantId(@Param("id") int id);
 
 
+
+
 }

@@ -100,7 +100,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
     Restaurant - содержит рестораны
     Menu - для внесения сведений о ежедневном меню ресторанов.
     MenuItem - содержит ссылку на блюдо из Dish, стоимость и ссылку на запись ежедневного меню в Menu
-    Vote - содержит сведения о голосовании пользователей. Связана отношениями с рестораном.
+    Vote - содержит сведения о голосовании пользователей.
     
         
 **REST API:** 
@@ -110,12 +110,12 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
     - voteforlunch - имя сервиса
     - host:port/api/v1 - URL к REST API
     - host:port/api/v1/public/register - URL регистрации нового пользователя
+    - host:port/api/v1/public/menu/{date} - URL для получения сведения о меню
+    - host:port/api/v1/public/votes/{date}/votingresults - URL для получения результатов голосования
+    - host:port/api/v1/profile/vote/{id} - URL для голосования
     - host:port/api/v1/login - URL для входа пользователя в систему
     - host:port/api/v1/admin - ресурсы для администрирования системы
-    - host:port/api/v1/admin/commands - ресурс командного интерфейса для администратора
-    - host:port/api/v1/admin/services - служебные сервисы администратора
     - host:port/api/v1/admin/h2 - консоль демо-базы данных
-    - host:port/api/v1/reports - история голосований и статистика 
 
 Форматы результатов запросов даны в виде примеров работы с curl.
 Следут помнить, что запросы **curl** должны содержать имя и пароль, например
@@ -139,17 +139,6 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
  - Зарегистрированный пользователь голосует за меню конкретного ресторана по адресу /profile/vote/{restaurant_id}
  - Пользователь может самостоятельно зарегистрироваться по адресу /register
 
-Также для администраторов системы доступна консоль базы данных H2 по адресу:
-
-    http://localhost:8080/voteforlunch/api/v1/admin/h2
-    
-сервисы Spring актуатора:
-
-    http://localhost:8080/voteforlunch/api/v1/admin/service/beans (...metrics)
-    
-и статистика таблиц базы данных:
-
-    http://localhost:8080/voteforlunch/api/v1/admin/service/info
     
 
 &#x1F534;  **Ресурсы, находящиеся по пути** **_http:<i></i>//host:port/voteforlunch/api/v1/admin/_**, **доступны только для пользователей с ролью ADMIN**  

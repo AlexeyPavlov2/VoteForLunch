@@ -27,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.javatraining.voteforlunch.util.entity.RestaurantUtil.createDtoListFromRestaurantList;
@@ -102,7 +103,7 @@ public class RestaurantAdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<DishDto> getDishes(@PathVariable("id") int id) {
         logger.info("Get dishes for with id = {}", id);
-        return DishUtil.createDtoListFromDishList(restaurantService.read(id).getDishes());
+        return DishUtil.createDtoListFromDishList(new ArrayList<Dish>(restaurantService.read(id).getDishes()));
     }
 
     @PostMapping("/{id}/dishes")

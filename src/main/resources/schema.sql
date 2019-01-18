@@ -71,6 +71,10 @@ CREATE TABLE menu_item (
 );
 CREATE INDEX date_index_menu_item_idx
   ON menu_item (datei);
+CREATE INDEX restaurant_index_menu_item_idx
+  ON menu_item (restaurant_id);
+CREATE INDEX dish_index_menu_item_idx
+  ON menu_item (dish_id);
 CREATE UNIQUE INDEX date_dish_price_unique_idx
   ON menu_item (datei, dish_id, price);
 
@@ -90,5 +94,5 @@ CREATE INDEX user_index_vote_idx
 CREATE INDEX restaurant_index_vote_idx
   ON vote (restaurant_id);
 /*CREATE UNIQUE INDEX date_user_unique_idx
-  ON vote (datev, user_id);*/
+  ON vote (datev, user_id);*/ /* deleted for testing*/
 

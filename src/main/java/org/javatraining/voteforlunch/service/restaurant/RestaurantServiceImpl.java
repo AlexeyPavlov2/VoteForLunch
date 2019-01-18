@@ -1,7 +1,6 @@
 package org.javatraining.voteforlunch.service.restaurant;
 
 import org.javatraining.voteforlunch.exception.NotFoundException;
-import org.javatraining.voteforlunch.model.Dish;
 import org.javatraining.voteforlunch.model.Restaurant;
 import org.javatraining.voteforlunch.repository.RestaurantRepository;
 import org.javatraining.voteforlunch.service.dish.DishService;
@@ -9,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -51,12 +48,6 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    @Cacheable("restaurants")
-    public List<Restaurant> readAllSorted(Sort sort) {
-        return restaurantRepository.findAll(sort);
-    }
-
-    @Override
     public Restaurant readByName(String name) throws NotFoundException {
         return Optional.ofNullable(restaurantRepository.findByName(name))
                 .orElseThrow(() -> new NotFoundException("Restaurant with name = " + name + " not found"));
@@ -88,11 +79,4 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void deleteAll() {
         restaurantRepository.deleteAll();
     }
-
-    @Override
-    public List<Dish> getDishByRestaurantId(int id) {
-        return dishService.getDishByRestaurantId(id);
-    }
-
-
 }

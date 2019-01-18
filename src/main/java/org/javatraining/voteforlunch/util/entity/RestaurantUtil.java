@@ -1,10 +1,13 @@
 package org.javatraining.voteforlunch.util.entity;
 
 import org.javatraining.voteforlunch.dto.RestaurantDto;
+import org.javatraining.voteforlunch.model.Dish;
+import org.javatraining.voteforlunch.model.MenuItem;
 import org.javatraining.voteforlunch.model.Restaurant;
+import org.javatraining.voteforlunch.model.Vote;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +28,7 @@ public class RestaurantUtil {
     public static Restaurant createRestaurantFromDto(RestaurantDto restaurant) {
         return new Restaurant(restaurant.getId(), restaurant.getName(),
                 restaurant.getDescription(), restaurant.getContact(), restaurant.getSite(),
-                restaurant.getEmail(), restaurant.getPhones(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList() );
+                restaurant.getEmail(), restaurant.getPhones(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet() );
     }
 
     public static Restaurant updateRestaurantFromDto(Restaurant restaurant, RestaurantDto restaurantDto) {
@@ -42,7 +45,7 @@ public class RestaurantUtil {
         return new Restaurant(
                 restaurant.getId(), restaurant.getName(), restaurant.getDescription(),
                 restaurant.getContact(), restaurant.getSite(), restaurant.getEmail(),
-                restaurant.getPhones(), new ArrayList(restaurant.getDishes()), new ArrayList(restaurant.getDishes()), new ArrayList(restaurant.getDishes()) ) ;
+                restaurant.getPhones(), new HashSet<Dish>(restaurant.getDishes()), new HashSet<MenuItem>(restaurant.getMenuItems()), new HashSet<Vote>(restaurant.getVotes()) ) ;
     }
 
 }

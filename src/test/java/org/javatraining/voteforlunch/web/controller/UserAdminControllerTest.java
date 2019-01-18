@@ -84,8 +84,8 @@ public class UserAdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithMockUser(username = "alex", password = "qwerty2", roles = {"USER", "ADMIN"})
-    public void readWithFiler() throws Exception {
-        List<UserDto> expected = UserUtil.createDtoListFromUserList(userService.readByNameLike("al"));
+    public void readWithFilter() throws Exception {
+        List<UserDto> expected = UserUtil.createDtoListFromUserList(userService.readByNameLike("aL"));
         mockMvc.perform(get(REST_URL + "/filter")
                 .param("name", "al"))
                 .andDo(print())

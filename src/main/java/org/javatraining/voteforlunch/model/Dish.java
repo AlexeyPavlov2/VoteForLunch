@@ -1,8 +1,6 @@
 package org.javatraining.voteforlunch.model;
 
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -28,9 +26,8 @@ public class Dish {
     @Column(name = "description", nullable = true)
     private String description;
 
-    @ManyToOne (optional=false/*, cascade=CascadeType.ALL*/)
+    @ManyToOne (optional=false)
     @JoinColumn (name="restaurant_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
 }

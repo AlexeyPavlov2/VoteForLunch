@@ -1,22 +1,21 @@
 package org.javatraining.voteforlunch.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-/*
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-*/
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+/*
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+*/
 
 @Entity
 @Table(name = "users")
@@ -59,6 +58,7 @@ public class User {
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
     )
+    @BatchSize(size = 500)
     private List<Role> roles;
 
     public void addRole(Role role) {

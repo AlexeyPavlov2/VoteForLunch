@@ -14,7 +14,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,9 +28,6 @@ public class MenuItemServiceImpl implements MenuItemService {
         this.menuItemRepository = menuItemRepository;
     }
 
-
-    @Autowired
-    private EntityManager entityManager;
 
     @Override
     @Cacheable("menuItems")

@@ -2,6 +2,7 @@ package org.javatraining.voteforlunch.web.controller;
 
 
 import org.javatraining.voteforlunch.dto.UserDto;
+import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Role;
 import org.javatraining.voteforlunch.model.User;
 import org.javatraining.voteforlunch.service.role.RoleService;
@@ -98,8 +99,11 @@ public class UserAdminController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public UserDto update(@Valid @RequestBody UserDto userDto) {
+    public UserDto update(@Valid @RequestBody UserDto userDto, @PathVariable("id") int id) {
         logger.info("Update user {} with info {}", userDto.getId(), userDto);
+        if (id != userDto.getId()) {
+            throw new NotFoundException("PathVariable = " + id + ", but in RequestBody found id = " + userDto.getId() + ". id must be the same");
+        }
         User user = userService.read(userDto.getId());
         return createDtoFrom(userService.update(updateUserFromDto(user, userDto)));
     }

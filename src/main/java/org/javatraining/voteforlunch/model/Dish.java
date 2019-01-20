@@ -26,7 +26,7 @@ public class Dish {
     @Column(name = "description", nullable = true)
     private String description;
 
-    @ManyToOne (optional=false)
+    @ManyToOne (optional=false, fetch = FetchType.LAZY)
     @JoinColumn (name="restaurant_id", nullable = false)
     private Restaurant restaurant;
 

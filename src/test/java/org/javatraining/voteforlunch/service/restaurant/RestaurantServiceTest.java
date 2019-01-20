@@ -1,5 +1,6 @@
 package org.javatraining.voteforlunch.service.restaurant;
 
+import org.javatraining.voteforlunch.dto.RestaurantDto;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Dish;
 import org.javatraining.voteforlunch.model.Restaurant;
@@ -65,16 +66,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void readAll() {
-        List<Restaurant> list = service.readAll();
-        list.forEach(el -> {
-            System.out.println(el.getId() + " : " + el.getName());
-            el.getDishes().forEach(el1 -> {
-                System.out.println(el1.getName());
-            });
-        });
-
-
-        //TestUtil.assertMatch(service.readAll(), RESTAURANTS, "dishes", "votes", "menuItems");
+        TestUtil.assertMatch(RestaurantUtil.createDtoListFromRestaurantList(service.readAll()).stream().sorted(Comparator.comparing(RestaurantDto::getId)).collect(Collectors.toList()), RestaurantUtil.createDtoListFromRestaurantList(RESTAURANTS).stream().sorted(Comparator.comparing(RestaurantDto::getId)).collect(Collectors.toList()));
     }
 
 

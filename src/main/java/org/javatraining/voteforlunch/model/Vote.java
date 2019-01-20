@@ -19,11 +19,11 @@ public class Vote {
 
     private LocalDateTime datev;
 
-    @ManyToOne (optional=false)
+    @ManyToOne (optional=false, fetch = FetchType.LAZY)
     @JoinColumn (name="user_id", nullable = false)
     private User user;
 
-    @ManyToOne (optional=false)
+    @ManyToOne (optional=false, fetch = FetchType.LAZY)
     @JoinColumn (name="restaurant_id", nullable = false)
     private Restaurant restaurant;
 

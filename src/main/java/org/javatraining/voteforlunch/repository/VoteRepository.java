@@ -31,5 +31,8 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     @Query("DELETE FROM Vote v WHERE EXTRACT(YEAR FROM datev) = EXTRACT(YEAR FROM :date) AND EXTRACT(MONTH FROM datev ) = EXTRACT(MONTH FROM :date) AND EXTRACT(DAY FROM datev ) = EXTRACT(DAY FROM :date) and v.user.id = :userId")
     void removeByDateAndUserId(@Param("date") LocalDateTime date, @Param("userId") int userId);
 
+    @Query("SELECT v FROM Vote v WHERE EXTRACT(YEAR FROM datev) = EXTRACT(YEAR FROM :date) AND EXTRACT(MONTH FROM datev ) = EXTRACT(MONTH FROM :date) AND EXTRACT(DAY FROM datev ) = EXTRACT(DAY FROM :date) and v.user.id = :userId AND v.restaurant.id = :restaurantId")
+    Vote findVotesByDateAndUserIdAndRestaurantId(
+            @Param("date") LocalDateTime date, @Param("userId") int userId, @Param("restaurantId") int restaurantId);
 
 }

@@ -23,7 +23,7 @@ public class DateFormatter implements Formatter<LocalDate> {
         logger.info("Print LocalDate");
         return DateTimeFormatter.ISO_DATE.format(object);
     }
-};
+}
 
 
 

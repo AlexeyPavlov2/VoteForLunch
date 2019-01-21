@@ -3,17 +3,17 @@ package org.javatraining.voteforlunch.util.entity;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface EntityUtil<ObjectEntity, ObjectDto> {
-    ObjectDto createDtoFromEntity(ObjectEntity objectEntity);
+public interface EntityUtil<E, D> {
+    D createDtoFromEntity(E objectEntity);
 
-    default List<ObjectDto> createDtoListFromEntityList(List<ObjectEntity> objectEntityList) {
+    default List<D> createDtoListFromEntityList(List<E> objectEntityList) {
         return objectEntityList.stream().map(this::createDtoFromEntity).collect(Collectors.toList());
-    };
+    }
 
-    ObjectEntity createEntityFromDto(ObjectDto objectDto);
+    E createEntityFromDto(D objectDto);
 
-    ObjectEntity updateEntityFromDto(ObjectEntity objectEntity, ObjectDto objectDto);
+    E updateEntityFromDto(E objectEntity, D objectDto);
 
-    ObjectEntity createNewEntityFromAnother(ObjectEntity objectEntity);
+    E createNewEntityFromAnother(E objectEntity);
 
 }

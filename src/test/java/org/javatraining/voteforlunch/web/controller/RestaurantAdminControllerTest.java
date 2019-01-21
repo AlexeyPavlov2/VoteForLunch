@@ -10,7 +10,6 @@ import org.javatraining.voteforlunch.service.restaurant.RestaurantService;
 import org.javatraining.voteforlunch.util.DateTimeUtil;
 import org.javatraining.voteforlunch.util.entity.DishUtil;
 import org.javatraining.voteforlunch.util.entity.MenuItemAdminUtil;
-import org.javatraining.voteforlunch.util.entity.RestaurantUtil;
 import org.javatraining.voteforlunch.util.json.JsonUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -90,7 +89,7 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
     @Test
     @WithMockUser(username = "alex", password = "qwerty2", roles = {"USER", "ADMIN"})
     public void update() throws Exception {
-        RestaurantDto expected = RestaurantUtil.createDtoFrom(RESTAURANT_2);
+        RestaurantDto expected = createDtoFrom(RESTAURANT_2);
         expected.setName("updated" + expected.getName());
         ResultActions action = mockMvc.perform(put(REST_URL + "/" + RESTAURANT_2_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +103,7 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
     @Test
     @WithMockUser(username = "alex", password = "qwerty2", roles = {"USER", "ADMIN"})
     public void create() throws Exception {
-        RestaurantDto expected = RestaurantUtil.createDtoFrom(RESTAURANT_6);
+        RestaurantDto expected = createDtoFrom(RESTAURANT_6);
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(util.writeValue(expected)))

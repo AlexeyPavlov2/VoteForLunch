@@ -49,7 +49,7 @@ public class LoggedUserControllerTest extends AbstractControllerTest {
                 .param("oldPassword", "qwerty")
                 .param("newPassword", "qwerty11"))
                 .andDo(print())
-                .andExpect(status().is5xxServerError())
+                .andExpect(status().is(500))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(containsString("Invalid Old Password")));
     }

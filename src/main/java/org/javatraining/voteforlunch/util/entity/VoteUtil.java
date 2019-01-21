@@ -1,9 +1,7 @@
 package org.javatraining.voteforlunch.util.entity;
 
-import org.javatraining.voteforlunch.dto.UserDto;
 import org.javatraining.voteforlunch.dto.VoteDto;
 import org.javatraining.voteforlunch.model.Restaurant;
-import org.javatraining.voteforlunch.model.User;
 import org.javatraining.voteforlunch.model.Vote;
 import org.javatraining.voteforlunch.repository.VoteRepository;
 import org.javatraining.voteforlunch.service.restaurant.RestaurantService;

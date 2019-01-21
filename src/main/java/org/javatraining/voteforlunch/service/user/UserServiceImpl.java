@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
     public User create(User user) {
         Objects.requireNonNull(user, "Parameter user cannot be null");
         user.setId(0);
-        Role role = roleRepository.findByName("USER");
         List<Role> roleList = new ArrayList<Role>() {{
             add(roleRepository.findByName("USER"));
         }};

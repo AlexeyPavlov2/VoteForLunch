@@ -68,6 +68,7 @@ public class UserAdminController {
                 break;
             default:
                 userList = userService.readAll();
+                break;
         }
         return createDtoListFromUserList(userList);
     }

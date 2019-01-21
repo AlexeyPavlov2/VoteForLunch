@@ -3,8 +3,6 @@ package org.javatraining.voteforlunch.util.entity;
 import org.javatraining.voteforlunch.dto.DishDto;
 import org.javatraining.voteforlunch.model.Dish;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

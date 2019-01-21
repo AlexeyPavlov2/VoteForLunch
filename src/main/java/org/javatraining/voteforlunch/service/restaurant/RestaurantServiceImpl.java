@@ -3,7 +3,6 @@ package org.javatraining.voteforlunch.service.restaurant;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Restaurant;
 import org.javatraining.voteforlunch.repository.RestaurantRepository;
-import org.javatraining.voteforlunch.service.dish.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -19,8 +18,6 @@ import java.util.Optional;
 @CacheConfig(cacheNames = "restaurants")
 public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
-    @Autowired
-    private DishService dishService;
 
     @Autowired
     public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {

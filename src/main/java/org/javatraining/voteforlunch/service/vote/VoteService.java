@@ -2,8 +2,6 @@ package org.javatraining.voteforlunch.service.vote;
 
 import org.javatraining.voteforlunch.model.Vote;
 import org.javatraining.voteforlunch.service.BaseService;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

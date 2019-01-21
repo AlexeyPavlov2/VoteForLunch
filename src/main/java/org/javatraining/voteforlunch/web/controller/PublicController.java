@@ -5,7 +5,6 @@ import org.javatraining.voteforlunch.dto.ResultObject;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.repository.VoteRepository;
 import org.javatraining.voteforlunch.service.menu_item.MenuItemService;
-import org.javatraining.voteforlunch.util.entity.VoteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ public class PublicController {
 
     @Autowired
     private VoteRepository voteRepository;
-
-    @Autowired
-    private VoteUtil voteUtil;
 
     @GetMapping(value = "/menu/{date}")
     @ResponseStatus(value = HttpStatus.OK)

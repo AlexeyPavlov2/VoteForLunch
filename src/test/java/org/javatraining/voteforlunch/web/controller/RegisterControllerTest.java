@@ -1,7 +1,6 @@
 package org.javatraining.voteforlunch.web.controller;
 
 import org.javatraining.voteforlunch.dto.UserDto;
-import org.javatraining.voteforlunch.service.user.UserService;
 import org.javatraining.voteforlunch.util.entity.UserUtil;
 import org.javatraining.voteforlunch.util.json.JsonUtil;
 import org.junit.Test;
@@ -17,9 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RegisterControllerTest extends AbstractControllerTest {
     private final String REST_URL = "/public/register";
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private JsonUtil util;

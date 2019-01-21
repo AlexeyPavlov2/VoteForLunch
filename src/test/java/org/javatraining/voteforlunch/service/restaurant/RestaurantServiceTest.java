@@ -4,7 +4,6 @@ import org.javatraining.voteforlunch.dto.RestaurantDto;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.model.Dish;
 import org.javatraining.voteforlunch.model.Restaurant;
-import org.javatraining.voteforlunch.util.TestUtil;
 import org.javatraining.voteforlunch.util.entity.RestaurantUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static org.javatraining.voteforlunch.util.DishTestData.DISHES;
 import static org.javatraining.voteforlunch.util.RestaurantTestData.*;
+import static org.javatraining.voteforlunch.util.TestUtil.assertMatch;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -34,50 +34,47 @@ public class RestaurantServiceTest {
     private RestaurantService service;
 
     @Autowired
-    CacheManager cacheManager;
+    private CacheManager cacheManager;
 
     @Before
     public void beforeEach() throws Exception {
         cacheManager.getCache("restaurants").clear();
         cacheManager.getCache("dishes").clear();
         cacheManager.getCache("menuItems").clear();
-
-
     }
 
 
     @Test
     public void create() {
-        TestUtil.assertMatch(service.create(RestaurantUtil.createNewFromAnother(RESTAURANT_6)),
+        assertMatch(service.create(RestaurantUtil.createNewFromAnother(RESTAURANT_6)),
                 RESTAURANT_6, "dishes");
     }
 
     @Test
     public void read() {
-        Restaurant restaurant = service.read(RESTAURANT_1_ID);
-        TestUtil.assertMatch(service.read(RESTAURANT_1_ID), RESTAURANT_1, "dishes", "votes", "menuItems");
+        assertMatch(service.read(RESTAURANT_1_ID), RESTAURANT_1, "dishes", "votes", "menuItems");
     }
 
     @Test(expected = NotFoundException.class)
     public void readNotFound() {
-        TestUtil.assertMatch(service.read(RESTAURANT_6_ID), RESTAURANT_6);
+        assertMatch(service.read(RESTAURANT_6_ID), RESTAURANT_6);
     }
 
 
     @Test
     public void readAll() {
-        TestUtil.assertMatch(RestaurantUtil.createDtoListFromRestaurantList(service.readAll()).stream().sorted(Comparator.comparing(RestaurantDto::getId)).collect(Collectors.toList()), RestaurantUtil.createDtoListFromRestaurantList(RESTAURANTS).stream().sorted(Comparator.comparing(RestaurantDto::getId)).collect(Collectors.toList()));
+        assertMatch(RestaurantUtil.createDtoListFromRestaurantList(service.readAll()).stream().sorted(Comparator.comparing(RestaurantDto::getId)).collect(Collectors.toList()), RestaurantUtil.createDtoListFromRestaurantList(RESTAURANTS).stream().sorted(Comparator.comparing(RestaurantDto::getId)).collect(Collectors.toList()));
     }
 
 
     @Test
     public void readByName() {
-        TestUtil.assertMatch(service.readByName(RESTAURANT_2.getName()), RESTAURANT_2, "dishes", "votes", "menuItems");
+        assertMatch(service.readByName(RESTAURANT_2.getName()), RESTAURANT_2, "dishes", "votes", "menuItems");
     }
 
     @Test(expected = NotFoundException.class)
     public void readByNameNotFound() {
-        TestUtil.assertMatch(service.readByName(RESTAURANT_6.getName()), RESTAURANT_6, "dishes");
+        assertMatch(service.readByName(RESTAURANT_6.getName()), RESTAURANT_6, "dishes");
     }
 
     @Test
@@ -93,7 +90,7 @@ public class RestaurantServiceTest {
         service.delete(RESTAURANT_2_ID);
         List<Restaurant> actual = service.readAll().stream().sorted(Comparator.comparing(Restaurant::getId)).collect(Collectors.toList());
         List<Restaurant> expected = RESTAURANTS.stream().filter(el -> el.getId() != RESTAURANT_2_ID).sorted(Comparator.comparing(Restaurant::getId)).collect(Collectors.toList());
-        TestUtil.assertMatch(RestaurantUtil.createDtoListFromRestaurantList(actual), RestaurantUtil.createDtoListFromRestaurantList(expected));
+        assertMatch(RestaurantUtil.createDtoListFromRestaurantList(actual), RestaurantUtil.createDtoListFromRestaurantList(expected));
     }
 
     @Test
@@ -102,13 +99,11 @@ public class RestaurantServiceTest {
         assertTrue(service.readAll().isEmpty());
     }
 
-
     @Test
     public void getDishes() {
-        TestUtil.assertMatch(service.read(RESTAURANT_1_ID).getDishes().stream().sorted(Comparator.comparing(Dish::getId)).collect(Collectors.toList()),
+        assertMatch(service.read(RESTAURANT_1_ID).getDishes().stream().sorted(Comparator.comparing(Dish::getId)).collect(Collectors.toList()),
                 Arrays.asList(DISHES.get(1), DISHES.get(2),
                         DISHES.get(3), DISHES.get(4), DISHES.get(5)).stream().sorted(Comparator.comparing(Dish::getId)).collect(Collectors.toList()), "restaurant");
    }
-
 
 }

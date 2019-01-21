@@ -29,7 +29,7 @@ public class UserServiceTest {
     private UserService service;
 
     @Autowired
-    CacheManager cacheManager;
+    private CacheManager cacheManager;
 
     @Before
     public void beforeEach() throws Exception {

@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/69d104afa8bc431a8d661d1f1a670690)](https://www.codacy.com/app/AlexeyPavlov2/VoteForLunch?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AlexeyPavlov2/VoteForLunch&amp;utm_campaign=Badge_Grade)
+
 ## Выпускной проект курса [Topjava](http://javaops.ru/reg/topjava)
 
   ### Содержание ###

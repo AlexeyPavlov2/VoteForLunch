@@ -11,6 +11,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.io.PrintStream;
+
 /*Алексей Павлов, выпускной проект, курс Topjava15, http://javaops.ru/*/
 
 @SpringBootApplication
@@ -18,20 +20,31 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching
 @EnableWebSecurity
 public class VoteforlunchApplication implements CommandLineRunner {
-	private static Logger logger = LoggerFactory.getLogger(VoteforlunchApplication.class);
+    private static Logger logger = LoggerFactory.getLogger(VoteforlunchApplication.class);
 
-	@Autowired
-	private CacheManager cacheManager;
+    @Autowired
+    private CacheManager cacheManager;
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(VoteforlunchApplication.class, args);
-	}
+    public static void main(String[] args) throws Exception {
+        SpringApplication app = new SpringApplication(VoteforlunchApplication.class);
+        app.setBanner((environment, sourceClass, out) -> showBanner(out));
+        app.run(args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		logger.info("Spring Boot Ehcache 2 Caching Configuration - " +
-				"using cache manager: " + cacheManager.getClass().getName());
-	}
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info("Spring Boot Ehcache 2 Caching Configuration - " +
+                "using cache manager: " + cacheManager.getClass().getName());
+    }
+
+    private static void showBanner(PrintStream out) {
+        out.println("<< V o t e   F o r   L u n c h >>");
+        out.println();
+        out.println("Graduaiton Project");
+        out.println("Topjava course, http://javaops.ru/");
+        out.println();
+    }
+
 
 }
 

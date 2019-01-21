@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +26,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@EnableWebMvc
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
     @Autowired
-    private PasswordEncoder pEncoder;
+    private PasswordEncoder encoder;
+
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -71,7 +74,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> readByNameLike(String name) {
         return userRepository.findByNameIgnoreCaseContaining(name);
-    };
+    }
+
+    ;
 
     @Override
     @Cacheable("users")
@@ -100,7 +105,10 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsById(user.getId())) {
             throw new NotFoundException("User with id = " + user.getId() + " not exists");
         }
-        return userRepository.save(UserUtil.prepareToSave(user, new BCryptPasswordEncoder()));
+        User oldUser = userRepository.getOne(user.getId());
+        String password = oldUser.getPassword();
+        user.setPassword(password);
+        return userRepository.save(user);
     }
 
     @Override
@@ -126,12 +134,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("User with id = " + id + " not found"));
         user.setEnabled(enabled);
-        userRepository.save(user);
+        update(user);
         return user;
     }
 
 
-
+    @Override
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    public void updatePassword(User user, String oldPassword, String newPassword) {
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+    }
 
 
 }

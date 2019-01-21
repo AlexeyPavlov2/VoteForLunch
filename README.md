@@ -232,7 +232,11 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | **/profile/vote/{id}**, где id - id ресторана   | Проголосовать за ресторан с указанным id | - | - |
+| **/profile/update_password?userId={id}&oldPassword={oldPassword}&newPassword={newPassword}**, где id - id пользовател   | - | - | - |
 
+Напрмер, смена пароля текущего пользователя:
+
+    curl -X POST 'http://localhost:8080/voteforlunch/api/v1/profile/update_password?userId=2&oldPassword=qwerty2&newPassword=qwerty22' -u alex:qwerty2
 
 Для пользователей без аккаунта:
 

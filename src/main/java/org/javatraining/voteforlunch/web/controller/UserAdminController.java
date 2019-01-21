@@ -135,7 +135,6 @@ public class UserAdminController {
         User user = userService.read(id);
         user.addRole(role);
         userService.update(user);
-
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}/roles")
                 .buildAndExpand(user.getId()).toUri();

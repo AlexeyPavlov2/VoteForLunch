@@ -18,6 +18,8 @@ INSERT INTO role (name)
 VALUES ('USER');
 INSERT INTO role (name)
 VALUES ('ROLE_ADMIN');
+INSERT INTO role (name)
+VALUES ('ROLE_SUPERADMIN');
 
 
 INSERT INTO user_roles VALUES (1, 1);

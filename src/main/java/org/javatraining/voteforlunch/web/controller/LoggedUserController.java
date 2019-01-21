@@ -1,6 +1,7 @@
 package org.javatraining.voteforlunch.web.controller;
 
 import org.javatraining.voteforlunch.exception.InvalidOldPasswordException;
+import org.javatraining.voteforlunch.exception.TimeExpiredExeption;
 import org.javatraining.voteforlunch.model.User;
 import org.javatraining.voteforlunch.model.Vote;
 import org.javatraining.voteforlunch.repository.VoteRepository;
@@ -44,9 +45,9 @@ public class LoggedUserController {
         logger.info("Vote!");
         LocalDateTime dateTime = LocalDateTime.now();
         LocalDateTime expiredDateTime = LocalDateTime.now().with(LocalTime.of(11, 0));
-        /*if (dateTime.isAfter(expiredDateTime)) {
+        if (dateTime.isAfter(expiredDateTime)) {
             throw new TimeExpiredExeption("User can vote no later than 11 am");
-        }*/
+        }
 
         String currentUserName = "";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

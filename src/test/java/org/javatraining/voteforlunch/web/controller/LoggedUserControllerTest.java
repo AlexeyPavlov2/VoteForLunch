@@ -32,11 +32,12 @@ public class LoggedUserControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "mick", password = "qwerty1", roles = {"USER"})
     public void doVote() throws Exception {
         logger.info("Vote!");
-        mockMvc.perform(post(REST_URL + "/vote/" + RESTAURANT_1_ID))
+        mockMvc.perform(post(REST_URL + "/vote")
+                .param("restaurant", String.valueOf(RESTAURANT_1_ID)))
                 .andDo(print())
                 .andExpect(status().isOk());
         Vote vote = voteRepository.findVotesByDateAndUserIdAndRestaurantId(
-                LocalDate.now().atStartOfDay(), USER_1_ID, RESTAURANT_1_ID);
+                LocalDate.now(), USER_1_ID, RESTAURANT_1_ID);
         Assert.assertNotNull(vote);
     }
 

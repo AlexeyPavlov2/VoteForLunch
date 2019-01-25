@@ -12,6 +12,7 @@ public interface MenuItemService extends BaseService<MenuItem> {
     void deleteByDateAndRestaurant(int restaurantId, LocalDate dateParam);
     List<MenuItem> readByDate(LocalDate dateParam);
     List<MenuDtoForUser> getMenuForDate(LocalDate date);
+    void deleteAllByDate(LocalDate date);
 
 
 }

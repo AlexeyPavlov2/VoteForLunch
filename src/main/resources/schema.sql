@@ -35,7 +35,7 @@ CREATE TABLE user_roles (
   ON DELETE CASCADE,
   UNIQUE (user_id, role_id)
 );
-CREATE INDEX user_role_user_role_idx
+CREATE INDEX user_roles_user_role_idx
   ON user_roles (user_id, role_id);
 
 CREATE TABLE restaurant (
@@ -57,7 +57,7 @@ CREATE TABLE dish (
   restaurant_id INTEGER      NOT NULL,
   FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX name_restaurant_unique_idx
+CREATE UNIQUE INDEX dish_name_restaurant_unique_idx
   ON dish (name, restaurant_id);
 
 CREATE TABLE menu_item (
@@ -69,30 +69,29 @@ CREATE TABLE menu_item (
   FOREIGN KEY (dish_id) REFERENCES dish (id) ON DELETE CASCADE,
   FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE,
 );
-CREATE INDEX date_index_menu_item_idx
+CREATE INDEX menu_item_date_index_menu_item_idx
   ON menu_item (datei);
-CREATE INDEX restaurant_index_menu_item_idx
+CREATE INDEX menu_item_restaurant_index_menu_item_idx
   ON menu_item (restaurant_id);
-CREATE INDEX dish_index_menu_item_idx
+CREATE INDEX menu_item__dish_idx
   ON menu_item (dish_id);
-CREATE UNIQUE INDEX date_dish_price_unique_idx
+CREATE UNIQUE INDEX menu_item_date_dish_price_unique_idx
   ON menu_item (datei, dish_id, price);
-
 
 CREATE TABLE vote (
   id            INTEGER IDENTITY PRIMARY KEY,
-  datev         DATETIME,
+  datev         DATE,
   user_id       INTEGER NOT NULL,
   restaurant_id INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE,
 );
-CREATE INDEX date_index_vote_idx
+CREATE INDEX vote_date_idx
   ON vote (datev);
-CREATE INDEX user_index_vote_idx
+CREATE INDEX vote_user_idx
   ON vote (user_id);
-CREATE INDEX restaurant_index_vote_idx
+CREATE INDEX vote_restaurant_index_vote_idx
   ON vote (restaurant_id);
-/*CREATE UNIQUE INDEX date_user_unique_idx
+/*CREATE UNIQUE INDEX vote_date_user_unique_idx
   ON vote (datev, user_id);*/ /* deleted for testing*/
 

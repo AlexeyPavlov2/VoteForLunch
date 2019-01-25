@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /*
 import org.springframework.security.core.GrantedAuthority;
@@ -66,8 +65,8 @@ public class User {
     }
 
     public void deleteRole(Role role) {
-        List<Role> newRoles = getRoles().stream()
-                .filter(el -> !el.getId().equals(role.getId())).collect(Collectors.toList());
+        List<Role> newRoles = getRoles();
+        newRoles.removeIf(el -> el.getId().equals(role.getId()));
         setRoles(newRoles);
     }
 

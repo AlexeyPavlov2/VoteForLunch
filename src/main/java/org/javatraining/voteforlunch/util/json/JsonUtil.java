@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import org.javatraining.voteforlunch.dto.UserDto;
 import org.javatraining.voteforlunch.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -25,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableWebMvc
 public class JsonUtil {
     @Autowired
-    @Qualifier("getMapper")
     private ObjectMapper mapper;
 
     public <T> String writeValue(T obj) {

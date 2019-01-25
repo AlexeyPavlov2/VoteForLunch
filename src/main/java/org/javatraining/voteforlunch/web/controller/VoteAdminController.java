@@ -1,5 +1,6 @@
 package org.javatraining.voteforlunch.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javatraining.voteforlunch.dto.VoteDto;
 import org.javatraining.voteforlunch.exception.NotFoundException;
 import org.javatraining.voteforlunch.repository.VoteRepository;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,38 +26,38 @@ public class VoteAdminController {
     @Autowired
     private VoteUtil voteUtil;
 
+    @Autowired
+    ObjectMapper mapper;
+
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteAll() {
-        logger.info("Delete all votes");
-        voteRepository.deleteAll();
-    }
-
-    @DeleteMapping(value = "/{date}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteByDate(@PathVariable("date") LocalDate date) {
-        logger.info("Delete by date");
-        LocalDateTime localDateTime = date.atStartOfDay();
-        if (!voteRepository.existsVotesByDatev(localDateTime)) {
-            throw new NotFoundException("No votes found for this date.");
+    public void deleteAllOrByDate(@RequestParam(value = "date", required = false) LocalDate date) {
+        if (date == null) {
+            logger.info("Delete all votes");
+            voteRepository.deleteAll();
+        } else {
+            logger.info("Delete by date");
+            if (!voteRepository.existsVotesByDatev(date)) {
+                throw new NotFoundException("No votes found for this date.");
+            }
+            voteRepository.removeByDatev(date);
         }
-        voteRepository.removeByDatev(localDateTime);
     }
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<VoteDto> getAll() {
-        return voteUtil.createDtoListFromEntityList(voteRepository.findAll());
-    }
-
-    @GetMapping(value = "/{date}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public List<VoteDto> getAllByDate(@PathVariable("date") LocalDate date) {
-        LocalDateTime dateTime = date.atStartOfDay();
-        if (!voteRepository.existsVotesByDatev(dateTime)) {
-            throw new NotFoundException("No votes found for this date.");
+    public List<VoteDto> getAllByDate(@RequestParam(value = "date", required = false) LocalDate date) {
+        if (date == null) {
+            logger.info("Get all votes");
+            return voteUtil.createDtoListFromEntityList(voteRepository.findAll());
+        } else {
+            if (!voteRepository.existsVotesByDatev(date)) {
+                throw new NotFoundException("No votes found for this date.");
+            }
+            return voteUtil.createDtoListFromEntityList(voteRepository.findVotesByDatev(date));
         }
-        return voteUtil.createDtoListFromEntityList(voteRepository.findVotesByDatev(dateTime));
+
+
     }
 
 }

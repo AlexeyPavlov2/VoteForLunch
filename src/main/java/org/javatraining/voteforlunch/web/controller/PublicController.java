@@ -27,18 +27,18 @@ public class PublicController {
     @Autowired
     private VoteRepository voteRepository;
 
-    @GetMapping(value = "/menu/{date}")
+    @GetMapping(value = "/menu")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<MenuDtoForUser> getMenu(@PathVariable("date") LocalDate date) {
+    public List<MenuDtoForUser> getMenu(@RequestParam("date") LocalDate date) {
         logger.info("Get the menu for the specified date");
         return menuItemService.getMenuForDate(date);
     }
 
-    @GetMapping(value = "/votes/{date}/votingresults")
+    @GetMapping(value = "/votes/votingresults")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ResultObject> getVotesResults(@PathVariable("date") LocalDate date) {
+    public List<ResultObject> getVotesResults(@RequestParam("date") LocalDate date) {
         logger.info("get restaurants and voices for this date");
-        List<ResultObject> resultByDate = voteRepository.getResultByDate(date.atStartOfDay());
+        List<ResultObject> resultByDate = voteRepository.getResultByDate(date);
         if (resultByDate.isEmpty()) {
             throw new NotFoundException("No voting results found for this date");
         }

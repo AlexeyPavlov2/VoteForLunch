@@ -3,7 +3,7 @@ package org.javatraining.voteforlunch.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -17,7 +17,7 @@ public class Vote {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    private LocalDateTime datev;
+    private LocalDate datev;
 
     @ManyToOne (optional=false, fetch = FetchType.LAZY)
     @JoinColumn (name="user_id", nullable = false)

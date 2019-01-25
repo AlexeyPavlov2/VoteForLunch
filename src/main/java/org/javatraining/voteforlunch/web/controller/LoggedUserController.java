@@ -1,7 +1,6 @@
 package org.javatraining.voteforlunch.web.controller;
 
 import org.javatraining.voteforlunch.exception.InvalidOldPasswordException;
-import org.javatraining.voteforlunch.exception.TimeExpiredExeption;
 import org.javatraining.voteforlunch.model.User;
 import org.javatraining.voteforlunch.model.Vote;
 import org.javatraining.voteforlunch.repository.VoteRepository;
@@ -10,6 +9,7 @@ import org.javatraining.voteforlunch.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,15 +39,19 @@ public class LoggedUserController {
     @Autowired
     private PasswordEncoder encoder;
 
-    @PostMapping("/vote/{restaurantId}")
+    @Value("${voteforlunch.app.expiredTime}")
+    private Integer expiredTime;
+
+
+    @PostMapping("/vote")
     @ResponseStatus(value = HttpStatus.OK)
-    public void doVote(@PathVariable("restaurantId") int restaurantId) {
+    public void doVote(@RequestParam(value = "restaurant", required = true) int restaurantId) {
         logger.info("Vote!");
         LocalDateTime dateTime = LocalDateTime.now();
-        LocalDateTime expiredDateTime = LocalDateTime.now().with(LocalTime.of(11, 0));
-        if (dateTime.isAfter(expiredDateTime)) {
-            throw new TimeExpiredExeption("User can vote no later than 11 am");
-        }
+        LocalDateTime expiredDateTime = LocalDateTime.now().with(LocalTime.of(expiredTime, 0));
+        /*if (dateTime.isAfter(expiredDateTime)) {
+            throw new TimeExpiredExeption("User can vote no later than " + expiredTime + "  am");
+        }*/
 
         String currentUserName = "";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -58,8 +62,8 @@ public class LoggedUserController {
 
         User user = userService.readByName(currentUserName);
 
-        voteRepository.removeByDateAndUserId(LocalDate.now().atStartOfDay(), user.getId());
-        voteRepository.save(new Vote(0, dateTime, user, restaurantService.read(restaurantId)));
+        voteRepository.removeByDateAndUserId(LocalDate.now(), user.getId());
+        voteRepository.save(new Vote(0, dateTime.toLocalDate(), user, restaurantService.read(restaurantId)));
     }
 
     @PostMapping(value = "/update_password")

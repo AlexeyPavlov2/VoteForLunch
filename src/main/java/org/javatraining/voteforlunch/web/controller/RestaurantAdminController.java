@@ -44,7 +44,6 @@ public class RestaurantAdminController {
     @Autowired
     private MenuItemAdminUtil menuItemAdminUtil;
 
-
     @Autowired
     public RestaurantAdminController(RestaurantService restaurantService, DishService dishService, MenuItemService menuItemService) {
         this.restaurantService = restaurantService;
@@ -167,37 +166,37 @@ public class RestaurantAdminController {
 
     //Working with menu
 
-    @GetMapping("/{id}/menu/{date}/menuitems")
+    @GetMapping("/{id}/menu/menuitems")
     @ResponseStatus(value = HttpStatus.OK)
     public List<MenuItemAdminDto> getMenu(@PathVariable("id") int id,
-                                          @PathVariable("date") LocalDate date) {
+                                          @RequestParam("date") LocalDate date) {
         logger.info("Get menu");
         List<MenuItem> menuItems = menuItemService.readByDateAndRestaurant(id, date);
         return menuItemAdminUtil.createDtoListFromEntityList(menuItems);
     }
 
-    @DeleteMapping("/{id}/menu/{date}/menuitems") //{menuitem_id}
+    @DeleteMapping("/{id}/menu/menuitems") //{menuitem_id}
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteMenu(@PathVariable("id") int id,
-                                          @PathVariable("date") LocalDate date) {
-        logger.info("Delete menu");
+                                          @RequestParam("date") LocalDate date) {
+        logger.info("Delete menu by date and restaurant");
         menuItemService.deleteByDateAndRestaurant(id, date);
     }
 
-    @GetMapping("/{id}/menu/{date}/menuitems/{menuItemsId}")
+    @GetMapping("/{id}/menu/menuitems/{menuItemsId}")
     @ResponseStatus(value = HttpStatus.OK)
     public MenuItemAdminDto getMenuItem(@PathVariable("id") int id,
-                                          @PathVariable("date") LocalDate date, @PathVariable("menuItemsId") int menuItemsId) {
-        logger.info("Get menu item");
+                                          @RequestParam("date") LocalDate date, @PathVariable("menuItemsId") int menuItemsId) {
+        logger.info("Get menu item on date");
         MenuItem menuItem = menuItemService.readByDateAndRestaurant(id, date)
                 .stream().filter(el -> el.getId().equals(menuItemsId)).findFirst().orElseThrow(() -> new NotFoundException("Not dound menu items with id = " + menuItemsId));
         return menuItemAdminUtil.createDtoFromEntity(menuItem);
 
     }
-    @PostMapping("/{id}/menu/{date}/menuitems")
+    @PostMapping("/{id}/menu/menuitems")
     @ResponseStatus(value = HttpStatus.OK)
     public MenuItemAdminDto addMenuItem(@PathVariable("id") int id,
-                                        @PathVariable("date") LocalDate date, @Validated @RequestBody  MenuItemAdminDto dto) {
+                                        @RequestParam("date") LocalDate date, @Validated @RequestBody  MenuItemAdminDto dto) {
         logger.info("Create new menu item menu item");
         LocalDate dateFromPath = date;
         LocalDate dateFromDto = dto.getDate();
@@ -209,17 +208,14 @@ public class RestaurantAdminController {
         return menuItemAdminUtil.createDtoFromEntity(menuItemService.create(entityFromDto));
     }
 
-    @DeleteMapping("/{id}/menu/{date}/menuitems/{menuItemsId}")
+    @DeleteMapping("/{id}/menu/menuitems/{menuItemsId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteMenuItem(@PathVariable("id") int id,
-                                        @PathVariable("date") LocalDate date, @PathVariable("menuItemsId") int menuItemsId) {
+                                        @RequestParam("date") LocalDate date, @PathVariable("menuItemsId") int menuItemsId) {
         logger.info("Delete menu item");
         MenuItem menuItem = menuItemService.readByDateAndRestaurant(id, date)
                 .stream().filter(el -> el.getId().equals(menuItemsId)).findFirst().orElseThrow(() -> new NotFoundException("Not found menu items with id = " + menuItemsId));
         menuItemService.delete(menuItem.getId());
     }
-
-
-
 
 }

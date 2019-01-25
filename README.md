@@ -8,18 +8,17 @@
 [Формулировка задачи](#description)  
 [Описание решения](#descriptionsol)  
     &nbsp;&nbsp;&nbsp;[1. Код и демо проекта](#codedemo)  
-    &nbsp;&nbsp;&nbsp;[2. Клонирование и запуск приложения](#runapp)  
-    &nbsp;&nbsp;&nbsp;[3. Предназначение, алгоритмы решения и использование приложения](#purpose)  
-    &nbsp;&nbsp;&nbsp;[4. Используемые инструменты и технологии](#algo)  
-    &nbsp;&nbsp;&nbsp;[5.Описание REST API](#descrest)  
+    &nbsp;&nbsp;&nbsp;[2. Предназначение, алгоритмы решения и использование приложения](#purpose)  
+    &nbsp;&nbsp;&nbsp;[3. Используемые инструменты и технологии](#algo)  
+    &nbsp;&nbsp;&nbsp;[4.Описание REST API](#descrest)  
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Роли](#roles)  
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Пользователи](#users)    
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Рестораны](#restaurants)    
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Блюда](#dishes)  
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Меню](#menu)  
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Голоса и голосование](#votes)    
-    &nbsp;&nbsp;&nbsp;[6. Обработка ошибок](#errors)  
-    &nbsp;&nbsp;&nbsp;[7. Примеры работы с curl](#curlexample)
+    &nbsp;&nbsp;&nbsp;[5. Обработка ошибок](#errors)  
+    &nbsp;&nbsp;&nbsp;[6. Примеры работы с curl](#curlexample)
     
     
 
@@ -27,31 +26,27 @@
 <a name="description"></a>
 **Формулировка задачи:**
 
-Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
+Разработать и реализовать приложение REST API с использованием Hibernate/Spring/SpringMVC (или Spring-Boot) без фронтэнда.
 
-The task is:
+Задача:
 
-Build a voting system for deciding where to have lunch.
+Разработайте систему голосования для выбора ресторана для обеда.
 
-* 2 types of users: admin and regular users
-* Admin can input a restaurant and it's lunch menu of the day (2-5 items usually, just a dish name and price)
-* Menu changes each day (admins do the updates)
-* Users can vote on which restaurant they want to have lunch at
-* Only one vote counted per user
-* If user votes again the same day:
-    *   If it is before 11:00 we assume that he changed his mind.
-    *   If it is after 11:00 then it is too late, vote can't be changed
-    
-Each restaurant provides new menu each day.
+В приложении должны быть 2 типа пользователей: администратор и обычный пользователь
+Администратор может ввести ресторан и вводить обеденное меню дня (обычно 2-5 пунктов, только название блюда и цена)
+Меню меняется каждый день (администраторы делают обновления)
+Пользователи могут голосовать в каком ресторане они хотят пообедать.
+Для каждого пользователя учитывается только один голос.
+Если пользователь проголосует снова в тот же день:
+ - если это до 11:00 дня , мы предполагаем, что он мог изменить свое мнение.
+ - если это после 11:00 дня , тогда уже слишком поздно и голосование не может быть изменено.
 
-As a result, provide a link to github userRepository.
+Каждый ресторан предлагает новое меню каждый день.
+В качестве результата выполнения задачи приведите ссылку на репозиторий github.
+В репозитории должны быть код приложения и файл README.md с описанием API и командами curl для голосования и получения результатов голосования.
 
-It should contain the code and **README.md with API documentation and curl commands to get data for voting and vote.**
-
-P.S.: Make sure everything works with latest version that is on github :)
-
-P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
-
+P.S.: Убедитесь, что все работает с последней версией, размещенной на github :)
+P.P.S .: При разработке учитывайте, что ваш API будет использоваться для разработки фронтэнда.
 ---
 
 <a name="descriptionsol"></a>
@@ -61,21 +56,8 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 
 Код проекта находится здесь:  [https://github.com/AlexeyPavlov2/VoteForLunch](https://github.com/AlexeyPavlov2/VoteForLunch)  
 
-<a name="runapp"></a>
-&#x1F539;  **2. Клонирование и запуск приложения**    
-
-Для запуска приложения выполните следующие шаги:
-* клонируйте этот репозиторий:
-    * сделайте fork проекта, скопируйте путь до созданного репозитария
-    * сделайте на своем компьютере
-    
-    **_git clone https://имя репозитария_**
-    * зайдите в корневую директорию проекта и запустите приложение
-    
-    **_mvn spring-boot:run_**
-
 <a name="purpose"></a>
-&#x1F539;  **3. Предназначение, алгоритмы решения и использование приложения**
+&#x1F539;  **2. Предназначение, алгоритмы решения и использование приложения**
      
 Приложение предназначено для организации голосования зарегистрированных в сервисе пользователей за обеденное меню ресторанов. 
 Меню ресторанов публикует пользователь,  имеющий роль администратора ADMIN. Администратор также имеет возможность управлять всеми сущностями приложения.
@@ -85,20 +67,19 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 Формат взаимодействия описан ниже.
  
 <a name="algo"></a>
-&#x1F539;  **4. Используемые инструменты и технологии**
+&#x1F539;  **3. Используемые инструменты и технологии**
 
 Spring Boot, Spring Security, Spring Rest, Spring Data Binding and Validation,
 Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit, AssertJ
 
 <a name="descrest"></a>
-&#x1F539;  **5.Описание REST API**
+&#x1F539;  **4.Описание REST API**
     
 Сущности: 
     
     User - предназначена для хранения пользователей системы
     Role - для хранения ролей пользователей, связана с сущностью User отношением Many-To-Many
     Dish - справочник блюд, связана отношением Many-To-One с сущностью Restaurant.
-    Также связана с сущностью Photo, предназначенной для хранения фотографий блюд.
     Restaurant - содержит рестораны
     Menu - для внесения сведений о ежедневном меню ресторанов.
     MenuItem - содержит ссылку на блюдо из Dish, стоимость и ссылку на запись ежедневного меню в Menu
@@ -112,8 +93,8 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
     - voteforlunch - имя сервиса
     - host:port/api/v1 - URL к REST API
     - host:port/api/v1/public/register - URL регистрации нового пользователя
-    - host:port/api/v1/public/menu/{date} - URL для получения сведения о меню
-    - host:port/api/v1/public/votes/{date}/votingresults - URL для получения результатов голосования
+    - host:port/api/v1/public/menu?date={date} - URL для получения сведения о меню
+    - host:port/api/v1/public/votes/votingresults?date={date} - URL для получения результатов голосования
     - host:port/api/v1/profile/vote/{id} - URL для голосования
     - host:port/api/v1/login - URL для входа пользователя в систему
     - host:port/api/v1/admin - ресурсы для администрирования системы
@@ -137,7 +118,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 Работа с программой выглядит следующим образом:
  - Администратор системы вводит данные об обеденном меню ресторанов.   
  При необходимости вносит сведения о ресторане, блюде и строке меню, содержащей блюдо и стоимость.
- - Пользователь изучает текущее меню по адресу /public/menu/{date}
+ - Пользователь изучает текущее меню по адресу /public/menu?date={date}
  - Зарегистрированный пользователь голосует за меню конкретного ресторана по адресу /profile/vote/{restaurant_id}
  - Пользователь может самостоятельно зарегистрироваться по адресу /register
 
@@ -186,8 +167,8 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | **/restaurants/{id}** |	- |	Получить данные о  ресторане с указанным id | Обновить ресторан с указанным id (данные в RequestBody). Возвращает обновленный ресторан и путь к ресурсу | Удалить ресторан с указанным id|
 | **/restaurants/{id}/dishes** | Создать новое блюдо для этого ресторана (данные в BodyRequest) |	Получить данные о  блюдах ресторана с указанным id | - | Удалить все блюда для этого ресторана|
 | **/restaurants/{id}/dishes/{dishId}** |	- |	Получить данные о  блюде  указанным dishId ресторана с указанным id | Обновить сведения о блюде с указанным dishId для указанного ресторана | Удалить блюдо с dishId для ресторана id |
-| **/restaurants/{id}/menu/{date}/menuitems** |	Создать новый пункт меню указанного ресторана на указанную дату. В RequestBody должен быть объект  {"id":0,"date":"2018-12-28","restaurant_id":1,"dish_id":4,"price": 23.56}   |	Получить меню указанного ресторана на указанную дату | - | Удалить меню ресторана на указанную дату |
-| **/restaurants/{id}/menu/{date}/menuitems/{menuitemsId}** | Получить сведения о пункте меню |	- | - | Удалить пункт меню с указанным menuItemsId  |
+| **/restaurants/{id}/menu/menuitems?date={date}** |	Создать новый пункт меню указанного ресторана на указанную дату. В RequestBody должен быть объект  {"id":0,"date":"2018-12-28","restaurant_id":1,"dish_id":4,"price": 23.56}   |	Получить меню указанного ресторана на указанную дату | - | Удалить меню ресторана на указанную дату |
+| **/restaurants/{id}/menu/menuitems/{menuitemsId}?date={date}** | Получить сведения о пункте меню |	- | - | Удалить пункт меню с указанным menuItemsId  |
 
 [Примеры работы с curl](#restaurantsexample)
 
@@ -203,12 +184,12 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 Кроме того, пользователь для голосования может получить меню на указанную дату, содержащее список ресторанов, 
 список блюд со стоимостью.  
   
-**Список функций REST API приложения для ресурса** **_http:<i></i>//host:port/voteforlunch/api/v1/public/menu{date}:_**
+**Список функций REST API приложения для ресурса** **_http:<i></i>//host:port/voteforlunch/api/v1/public:_**
   
 
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| **/public/menu/{date}**, где date-требуемая дата в формате yyyy-mm-dd  | - | Получить меню на дату | - | - |
+| **/public/menu/?date={date}**, где date-требуемая дата в формате yyyy-mm-dd  | - | Получить меню на дату | - | - |
 
 [Пример работы с curl](#menuserexample)
 
@@ -222,7 +203,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | **/votes**  | - | Получить всю историю голосований | Удалить всю историю голосований |
-| **/votes/{date}**, где date - дата в формат yyyy-mm-dd |	- |	Получить данные о голосовании на указанную дату| - | Удалить историю голосования на указанную дату |
+| **/votes?date={date}**, где date - дата в формат yyyy-mm-dd |	- |	Получить данные о голосовании на указанную дату| - | Удалить историю голосования на указанную дату |
 
 
 [Пример работы с curl:](#votesadminexample)
@@ -233,7 +214,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| **/profile/vote/{id}**, где id - id ресторана   | Проголосовать за ресторан с указанным id | - | - |
+| **/profile/vote?restaurant={restaurantId}**   | Проголосовать за ресторан с указанным restaurantId | - | - |
 | **/profile/update_password?userId={id}&oldPassword={oldPassword}&newPassword={newPassword}**, где id - id пользовател   | - | - | - |
 
 Напрмер, смена пароля текущего пользователя:
@@ -247,7 +228,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | **/public/menu/{date}**   | - | Получить меню ресторанов на указаннную дату | - |
-| **/public/votes/{date}/votingresults**   | - | Получить результаты голосования на указаннную дату | - |
+| **/public/votes/votingresults?date={date}**   | - | Получить результаты голосования на указаннную дату | - |
 | **/public/register**   | Создать нового пользователя | - | - |
 
 
@@ -267,15 +248,15 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 может проголосовать послав запрос вида
 
-    curl -X POST http://host:port/voteforlunch/api/v1/profile/vote/{restaurant_id}
+    curl -X POST http://localhost:8080/voteforlunch/api/v1/profile/vote?restaurant=1
 
 Результаты голосования доступны по адресу
 
-    http://host:port/voteforlunch/api/v1/public/votes/{date}votingresults
+    http://host:port/voteforlunch/api/v1/public/votes/votingresults?date={date}
     
 Например, получить результаты голосования на 28.12.2018  
 
-     curl http://localhost:8080/voteforlunch/api/v1/public/votes/2018-12-28/votingresults
+     curl http://localhost:8080/voteforlunch/api/v1/public/votes/votingresults?date=2018-12-28
      
 Получим
 
@@ -286,7 +267,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
     
 
 <a name="errors"></a>
-&#x1F539;  **6. Обработка ошибок**
+&#x1F539;  **5. Обработка ошибок**
 
 Сервис в случае появления ошибки генерирует ошибку и возвращает клиенту в виде JSON объекта.
 Формат объекта ошибки:  
@@ -564,7 +545,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 **Получить сведения о меню ресторана на указанную дату:**
   
-    curl http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems
+     curl http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/menuitems?date=2018-12-28 -u alex:qwerty2
 
 **Возвращает:**
 
@@ -572,11 +553,11 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 **Удалить меню указанного ресторана на указанную дату:**
   
-    curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems
+     curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/menuitems?date=2018-12-28 -u alex:qwerty2
 
 **Создать пункт меню меню указанного ресторана на указанную дату с указанным блюдом с указанной стоимостью:**
   
-     curl --header "Content-Type: application/json" --request POST --data '{"id":0,"date":"2018-12-28","restaurant_id":1,"dish_id":4,"price": 23.56}' http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/2018-12-28/menuitems/
+      curl --header "Content-Type: application/json" --request POST --data '{"id":0,"date":"2018-12-28","restaurant_id":1,"dish_id":4,"price": 23.56}' http://localhost:8080/voteforlunch/api/v1/admin/restaurants/1/menu/menuitems?date=2018-12-28 -u alex:qwerty2
 
 **Возвращает:**
 
@@ -584,11 +565,11 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 ---------------------------------------------
 <a name="menuserexample"></a>
-**Примеры работы c curl для ресурса** **_http:<i></i>//host:port/voteforlunch/api/v1/public/menu/{date}:_**  
+**Примеры работы c curl для ресурса** **_http:<i></i>//host:port/voteforlunch/api/v1/public/menu:_**  
 
 **Получить меню на указанную дату:**
   
-     curl  http://localhost:8080/voteforlunch/api/v1/public/menu/2018-12-28
+     curl  http://localhost:8080/voteforlunch/api/v1/public/menu?date=2018-12-28
 
 **Возвращает:**
 ```json
@@ -705,7 +686,8 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 **Получить историю голосований на дату:**
      
-     curl http://localhost:8080/voteforlunch/api/v1/admin/votes/2018-12-28 
+     curl http://localhost:8080/voteforlunch/api/v1/admin/votes/?date=2018-12-28 -u alex:qwerty2
+ 
           
 **Возвращает:**
 
@@ -717,7 +699,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
       
 **Удалить историю голосований на указанную дату:**
       
-      curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/votes/2018-12-28
+      curl -X DELETE http://localhost:8080/voteforlunch/api/v1/admin/votes?date=2018-12-28
 
 
 

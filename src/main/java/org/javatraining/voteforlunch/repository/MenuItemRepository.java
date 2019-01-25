@@ -21,6 +21,10 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
     @Query("DELETE FROM MenuItem")
     void deleteAll();
 
+    @Transactional
+    @Modifying
+    void deleteAllByDatei(LocalDate date);
+
     @Query("SELECT m FROM MenuItem m WHERE m.restaurant.id = :restaurantId AND m.datei = :dateParam ORDER BY m.datei DESC")
     List<MenuItem> findByDateAndRestaurant(@Param("restaurantId") int restaurantId,
                                            @Param("dateParam") LocalDate dateParam);

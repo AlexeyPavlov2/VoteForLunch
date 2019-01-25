@@ -170,7 +170,7 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "alex", password = "qwerty2", roles = {"USER", "ADMIN"})
     public void deleteOneDish() throws Exception {
         int dishId = 3;
-        mockMvc.perform(delete(REST_URL + "/" + RESTAURANT_1_ID + "/dishes/"+ dishId))
+        mockMvc.perform(delete(REST_URL + "/" + RESTAURANT_1_ID + "/dishes/" + dishId))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         dishService.read(dishId);
@@ -219,7 +219,8 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
         List<MenuItemAdminDto> expected =
                 menuItemAdminUtil.createDtoListFromEntityList(menuItemService.readByDateAndRestaurant(RESTAURANT_1_ID,
                         DateTimeUtil.getParseDateString(DATE_PART)));
-        MvcResult result = mockMvc.perform(get(REST_URL + "/" + RESTAURANT_1_ID + "/menu/" + DATE_PART + "/menuitems"))
+        MvcResult result = mockMvc.perform(get(REST_URL + "/" + RESTAURANT_1_ID + "/menu/menuitems")
+                .param("date", DATE_PART))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -228,6 +229,17 @@ public class RestaurantAdminControllerTest extends AbstractControllerTest {
         List<MenuItemAdminDto> actual = util.readListFromJsonMvcResult(result, MenuItemAdminDto.class);
         assertMatch(actual, expected);
     }
+
+    @Test
+    @WithMockUser(username = "alex", password = "qwerty2", roles = {"USER", "ADMIN"})
+    public void deleteMenuItemsOnDate() throws Exception {
+        mockMvc.perform(delete(REST_URL + "/" + RESTAURANT_1_ID + "/menu/menuitems")
+                .param("date", DATE_PART))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        Assert.assertTrue(menuItemService.readByDateAndRestaurant(RESTAURANT_1_ID, DateTimeUtil.getParseDateString(DATE_PART)).isEmpty());
+    }
+
 
 
 

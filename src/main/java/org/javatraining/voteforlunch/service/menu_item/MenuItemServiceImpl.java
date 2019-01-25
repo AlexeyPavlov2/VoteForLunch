@@ -121,4 +121,10 @@ public class MenuItemServiceImpl implements MenuItemService {
         return list.stream().sorted(Comparator.comparing(el -> el.getRestaurant().getId())).collect(Collectors.toList());
 
     }
+
+
+    @Override
+    public void deleteAllByDate(LocalDate date) {
+        menuItemRepository.deleteAllByDatei(date);
+    }
 }

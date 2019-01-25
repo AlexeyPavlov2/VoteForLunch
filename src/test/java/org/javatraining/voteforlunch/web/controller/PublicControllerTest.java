@@ -35,7 +35,8 @@ public class PublicControllerTest extends AbstractControllerTest {
 
     @Test
     public void getMenuNotFound() throws Exception {
-        mockMvc.perform(get(REST_URL + "/menu/" + DATE_PART_WRONG))
+        mockMvc.perform(get(REST_URL + "/menu")
+                .param("date", DATE_PART_WRONG))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(containsString("No menu found for this date.")))
@@ -44,7 +45,9 @@ public class PublicControllerTest extends AbstractControllerTest {
 
     @Test
     public void getMenu() throws Exception {
-        MvcResult result = mockMvc.perform(get(REST_URL + "/menu/" + DATE_PART))
+        MvcResult result = mockMvc.perform(get(REST_URL + "/menu")
+                .param("date", DATE_PART))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -56,10 +59,11 @@ public class PublicControllerTest extends AbstractControllerTest {
 
     @Test
     public void getResults() throws Exception {
-        List<ResultObject> expected = voteRepository.getResultByDate(DateTimeUtil.getParseDateString(DATE_PART).atStartOfDay())
+        List<ResultObject> expected = voteRepository.getResultByDate(DateTimeUtil.getParseDateString(DATE_PART))
                 .stream().sorted((el1, el2) -> -el1.getVotes().compareTo(el2.getVotes()))
                 .collect(Collectors.toList());
-        MvcResult result = mockMvc.perform(get(REST_URL + "/votes/" + DATE_PART + "/votingresults"))
+        MvcResult result = mockMvc.perform(get(REST_URL + "/votes/votingresults")
+                .param("date", DATE_PART))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

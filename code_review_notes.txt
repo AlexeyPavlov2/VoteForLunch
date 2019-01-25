@@ -1,0 +1,160 @@
+VoteForLunch
+#1
+
+spring-boot- :+1: Да, я до этого его в глаза не видел.) Затратил более 40 р.ч., наверное для настоящего middle эта работа часов на 15 максимум:)
+по pom: spring-boot-starter-json входит в spring-boot-starter-web, его не надо добавлять
++++ - исправлено
+
+почему spring-test не тот, который с spring-boot идет, а версия ниже?
+
+assertj-core- идет вместе с spring-boot-starter-test и она scope test
++++ пришлось поменять scope spring-boot-starter-test на compile, иначе assertj не находит
+
+мелоч: если задачка на english- решение тоже на нем надо писать
++++ - написал на русском условие задачи
+
+Клонирование и запуск приложения- клонирование - это лишняя информация. а - сделайте fork проекта- вообще не требуется (edited)
++++ исправлено
+
+Grigory Kislin [7:55 PM]
+REST API:
+{date} - это же не сущность и не id, по rest должно быть parameter (edited) ...
++++ - поменял на параметр date везде. Переделал тесты и доки.
+
+profile/vote/{id}- URL для голосования - здесть {id} выглядит как voteId. или параметр или сделать голосование в наборе URL ресторана (edited)
++++ - сделан параметр ?restaurant = {restaurantId}
+
+Grigory Kislin [8:11 PM]
+в ответах формат даты (http://localhost:8080/voteforlunch/api/v1/public/menu/2018-12-28 и других):
+```"date": [
+2018,
+12,
+28
+],```
+интересно, что у тебя в примерах все ок.
+вообще по умолчанию все работает: https://stackoverflow.com/questions/29956175/json-java-8-localdatetime-format-in-spring-boot
+но у тебя собственный CustomObjectMapper. Немного подергал, но не получилось сделать как у тебя в ответах
+репозиторий свежий с github- проверь у себя
+Буду делать bootjava курс- попробую CustomObjectMapper
+вообще ты дублируешь часть json настроек в CustomObjectMapper и application.properties
+даже не знаю- применяются ли они к CustomObjectMapper (edited)
+
++++ - у меня тоже оказывается с датами все сломалось. Я много игрался с Json аннотациями и ObjectMapper и HttpMessageConverter, видимо  в какой-то
+момень правильное решение исчезло. Сейчас решил с помощью аннотаций, теперь даты не кривые
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+ на LocalDate в нужных DTO, но буду искать как у меня раньше получилось. К тому же исчезло форматирование JSON при выводе, хотя
+SerializationFeature.INDENT_OUTPUT в mapper'e я установил. Работает точно мой кастомный mapper, так что пока не понимаю почему не работает.
+
+запрос http://localhost:8080/voteforlunch/api/v1/public/votes/2018-12-28/votingresults достаточно тяжелый
+учитывая что юзеров оочень много, голосов- на порядок два больше нельзя давать такой запрос наружу для всех. еще и без кэширования (edited)
+
+Обработка ошибок
+если кода много не писать, то можно стандартную spring-boot оставить
+вообще мое субъективное мнение - тестовые задания- такой вид продукта, где кода должно быть минимум...
+
+Grigory Kislin [12:30 AM]
+DB
+users_unique_name_idx- мм, обычно имена неуникальные...  у нас в алкателе за одним столом два миши соколовых сидели (edited) - в соцсетях, например, LJ - имя уникальное.
++++ - все-таки здесь скорее ник, чем имя. У меня и имя и email должны быть уникальны, на мой взгляд, это нормально.
+
+menu_item.price - на мой взгляд это лучше в dish.price (edited) - свою точку зрения объяснил
+date_dish_price_unique_idx- вот тут не понял
+можно в меню несколько одинаковых блюд с разными ценами?
++++ - свою точку зрения объяснил
+
+и если есть составной индекс (datei, dish_id, price) то по моему он как индекс datei будет работать
+еще - restaurant_id есть в dish и menu_item
+это 1. лишние данные 2. может быть несогласованность
+не вижу причин тут экономить на join (edited)
+
+
+Grigory Kislin [4:50 AM]
+vote - однозначно нужен индекс на (user_id,datev) причем datev должно быть DATE. можно как доп. время сохранять
++++ поменял везде на LocalDate, упростил query
+
+Grigory Kislin [2:29 PM]
+PasswordEncoder passwordencoder() лучше PasswordEncoderFactories.createDelegatingPasswordEncoder()
+
+Grigory Kislin [3:08 PM]
+SecurityContextHolder.getContext().getAuthentication() - проще @AuthenticationPrincipal
+LoggedUserController- елси анонимус идет запрос в базу с currentUserName = "". зачем?
+
+модель:
+AbstractBaseEntity- unused
++++ удалено
+
+User.deleteRole - > getRoles().removeIf()
++++ исправлено
+
+VoteRepository- все запросы с EXTRACT становятся нормальными, если подавать LocalDate и хранить DATE (edited)
++++ - везде сделал как ты предложил
+
+Grigory Kislin [7:47 PM]
+VoteService- unused
+
+кэшировать на мой взгляд надо только публичные запросы (неавторизованные и юзера)
+админов мало- можно не кешировать. например readAllOrderByEmail - совсем НЕ надо. админов мало, юзеров ооочень много (edited)
+и для более гибкого кэшировани, например ресторанов можно юзать hibernate 2d level кэш (edited)
+
+LoggedUserController.doVote
+LocalTime.of(11, 0)- какминимум выделить в константу, а лучше вынести в конфигурацию
++++ - вынес в application.properties в виде константы voteforlunch.app.expiredTime
+
+Grigory Kislin [8:51 PM]
+Тесты: интересно, что у меня поодиночке идут, а вместе mvn test
+```[ERROR] Errors:
+[ERROR]   LoggedUserControllerTest.doVote » IllegalState Failed to load ApplicationConte...
+[ERROR]   LoggedUserControllerTest.updatePassword » IllegalState Failed to load Applicat...
+[ERROR]   LoggedUserControllerTest.updatePasswordWrongOldPassword » IllegalState Failed ...
+[ERROR]   PublicControllerTest.getMenu » IllegalState Failed to load ApplicationContext
+[ERROR]   PublicControllerTest.getMenuNotFound » IllegalState Failed to load Application...
+[ERROR]   PublicControllerTest.getResults » IllegalState Failed to load ApplicationConte...
+[ERROR]   RegisterControllerTest.create » IllegalState Failed to load ApplicationContext
+[ERROR]   RestaurantAdminControllerTest.create » IllegalState Failed to load Application...
+[ERROR]   RestaurantAdminControllerTest.createDish » IllegalState Failed to load Applica...
+[ERROR]   RestaurantAdminControllerTest.deleteAll » IllegalState Failed to load Applicat...
+[ERROR]   RestaurantAdminControllerTest.deleteDishes » IllegalState Failed to load Appli...
+[ERROR]   RestaurantAdminControllerTest.deleteOne » IllegalState Failed to load Applicat...
+[ERROR]   RestaurantAdminControllerTest.deleteOneDish » IllegalState Failed to load Appl...
+[ERROR]   RestaurantAdminControllerTest.getDishById » IllegalState Failed to load Applic...
+[ERROR]   RestaurantAdminControllerTest.getDishByIdNotFound » IllegalState Failed to loa...
+[ERROR]   RestaurantAdminControllerTest.getDishes » IllegalState Failed to load Applicat...
+[ERROR]   RestaurantAdminControllerTest.getOne » IllegalState Failed to load Application...
+[ERROR]   RestaurantAdminControllerTest.getOneNotFound » IllegalState Failed to load App...
+[ERROR]   RestaurantAdminControllerTest.readAll » IllegalState Failed to load Applicatio...
+[ERROR]   RestaurantAdminControllerTest.readMenu » IllegalState Failed to load Applicati...
+[ERROR]   RestaurantAdminControllerTest.update » IllegalState Failed to load Application...
+[ERROR]   RestaurantAdminControllerTest.updateDish » IllegalState Failed to load Applica...
+[ERROR]   UserAdminControllerTest.addRole » IllegalState Failed to load ApplicationConte...
+[ERROR]   UserAdminControllerTest.create » IllegalState Failed to load ApplicationContex...
+[ERROR]   UserAdminControllerTest.deleteAllUsers » IllegalState Failed to load Applicati...
+[ERROR]   UserAdminControllerTest.deleteOne » IllegalState Failed to load ApplicationCon...
+[ERROR]   UserAdminControllerTest.deleteRole » IllegalState Failed to load ApplicationCo...
+[ERROR]   UserAdminControllerTest.readAll » IllegalState Failed to load ApplicationConte...
+[ERROR]   UserAdminControllerTest.readAllSortEmail » IllegalState Failed to load Applica...
+[ERROR]   UserAdminControllerTest.readAllSortName » IllegalState Failed to load Applicat...
+[ERROR]   UserAdminControllerTest.readOne » IllegalState Failed to load ApplicationConte...
+[ERROR]   UserAdminControllerTest.readPage » IllegalState Failed to load ApplicationCont...
+[ERROR]   UserAdminControllerTest.readWithFilter » IllegalState Failed to load Applicati...
+[ERROR]   UserAdminControllerTest.setEnable » IllegalState Failed to load ApplicationCon...
+[ERROR]   UserAdminControllerTest.testGetUnAuth » IllegalState Failed to load Applicatio...
+[ERROR]   UserAdminControllerTest.update » IllegalState Failed to load ApplicationContex...
+[INFO]
+[ERROR] Tests run: 121, Failures: 12, Errors: 36, Skipped: 0```
+```org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'cacheManager' defined in class path resource [org/springframework/boot/autoconfigure/cache/EhCacheCacheConfiguration.class]: Unsatisfied dependency expressed through method 'cacheManager' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ehCacheCacheManager' defined in class path resource [org/springframework/boot/autoconfigure/cache/EhCacheCacheConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [net.sf.ehcache.CacheManager]: Factory method 'ehCacheCacheManager' threw exception; nested exception is net.sf.ehcache.CacheException: Another unnamed CacheManager already exists in the same VM. Please provide unique names for each CacheManager in the config or do one of following:
+1. Use one of the CacheManager.create() static factory methods to reuse same CacheManager with same name or create one if necessary
+2. Shutdown the earlier cacheManager before creating new one with same name.
+The source of the existing CacheManager is: InputStreamConfigurationSource [stream=java.io.BufferedInputStream@793937ec]```
+а после 11 даже одиночный LoggedUserControllerTest.doVote не проходит
+```java.lang.AssertionError: Status
+Expected :200
+Actual   :500```
+(edited)
+
+Grigory Kislin [9:13 PM]
+Итого основное: приложение очень богатое,  не проходят тесты... и у меня формат даты кривой...
++ разные мелочи по реализации. База данных наиболее приближена к тому, что я сделал в последний раз.
+Те необходима внимательность! особенно когда кода много...
+Стажировка планируется в начале февралля, буду делать рассылку (edited)

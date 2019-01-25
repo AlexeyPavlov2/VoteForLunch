@@ -45,5 +45,9 @@ public class DateTimeUtil {
         return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
     }
 
+    public static String localDateToString(LocalDate ld) {
+        return ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
 
 }

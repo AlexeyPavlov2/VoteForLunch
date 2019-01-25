@@ -24,7 +24,7 @@
            transactionalMode="off">
     </cache>
     <cache name="restaurants"
-           maxElementsInMemory="100"
+           maxElementsInMemory="1000"
            eternal="false"
            overflowToDisk="false"
            timeToLiveSeconds="300"

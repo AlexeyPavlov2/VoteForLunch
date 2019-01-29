@@ -37,7 +37,7 @@ public class PublicController {
     @GetMapping(value = "/votes/votingresults")
     @ResponseStatus(value = HttpStatus.OK)
     public List<ResultObject> getVotesResults(@RequestParam("date") LocalDate date) {
-        logger.info("get restaurants and voices for this date");
+        logger.info("Get voting  result - restaurants and voices for this date");
         List<ResultObject> resultByDate = voteRepository.getResultByDate(date);
         if (resultByDate.isEmpty()) {
             throw new NotFoundException("No voting results found for this date");

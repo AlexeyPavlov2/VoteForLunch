@@ -3,7 +3,7 @@ package org.javatraining.voteforlunch.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javatraining.voteforlunch.dto.VoteDto;
 import org.javatraining.voteforlunch.exception.NotFoundException;
-import org.javatraining.voteforlunch.repository.VoteRepository;
+import org.javatraining.voteforlunch.service.vote.VoteService;
 import org.javatraining.voteforlunch.util.entity.VoteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class VoteAdminController {
     static final String REST_URL = "/admin/votes";
 
     @Autowired
-    private VoteRepository voteRepository;
+    private VoteService voteService;
 
     @Autowired
     private VoteUtil voteUtil;
@@ -34,13 +34,13 @@ public class VoteAdminController {
     public void deleteAllOrByDate(@RequestParam(value = "date", required = false) LocalDate date) {
         if (date == null) {
             logger.info("Delete all votes");
-            voteRepository.deleteAll();
+            voteService.deleteAll();
         } else {
             logger.info("Delete by date");
-            if (!voteRepository.existsVotesByDatev(date)) {
+            if (!voteService.existsVotesByDate(date)) {
                 throw new NotFoundException("No votes found for this date.");
             }
-            voteRepository.removeByDatev(date);
+            voteService.removeByDate(date);
         }
     }
 
@@ -49,12 +49,12 @@ public class VoteAdminController {
     public List<VoteDto> getAllByDate(@RequestParam(value = "date", required = false) LocalDate date) {
         if (date == null) {
             logger.info("Get all votes");
-            return voteUtil.createDtoListFromEntityList(voteRepository.findAll());
+            return voteUtil.createDtoListFromEntityList(voteService.readAll());
         } else {
-            if (!voteRepository.existsVotesByDatev(date)) {
+            if (!voteService.existsVotesByDate(date)) {
                 throw new NotFoundException("No votes found for this date.");
             }
-            return voteUtil.createDtoListFromEntityList(voteRepository.findVotesByDatev(date));
+            return voteUtil.createDtoListFromEntityList(voteService.findVotesByDate(date));
         }
 
 

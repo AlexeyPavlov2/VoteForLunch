@@ -54,7 +54,7 @@ public class RestaurantAdminController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<RestaurantDto> getAll() {
-        logger.info("Retrieve all restaurantsusers");
+        logger.info("Retrieve all restaurant");
         return createDtoListFromRestaurantList(restaurantService.readAll());
     }
 
@@ -122,7 +122,7 @@ public class RestaurantAdminController {
     @DeleteMapping("/{id}/dishes")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteDishes(@PathVariable("id") int id) {
-        logger.info("Delete all dishesGet dishes for restaurant with id = {}", id);
+        logger.info("Delete all dishes for restaurant with id = {}", id);
         dishService.deleteAllByRestaurantId(id);
     }
 

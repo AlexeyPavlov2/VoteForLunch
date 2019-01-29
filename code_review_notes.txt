@@ -68,7 +68,7 @@ date_dish_price_unique_idx- вот тут не понял
 еще - restaurant_id есть в dish и menu_item
 это 1. лишние данные 2. может быть несогласованность
 не вижу причин тут экономить на join (edited)
-
++++ - да, действительно, это я экономил на join
 
 Grigory Kislin [4:50 AM]
 vote - однозначно нужен индекс на (user_id,datev) причем datev должно быть DATE. можно как доп. время сохранять
@@ -79,7 +79,10 @@ PasswordEncoder passwordencoder() лучше PasswordEncoderFactories.createDele
 
 Grigory Kislin [3:08 PM]
 SecurityContextHolder.getContext().getAuthentication() - проще @AuthenticationPrincipal
++++ - не стал менять, но тут почитал https://docs.spring.io/spring-security/site/docs/5.0.0.RELEASE/reference/htmlsingle/#mvc-authentication-principal
+
 LoggedUserController- елси анонимус идет запрос в базу с currentUserName = "". зачем?
++++ - исправлено.
 
 модель:
 AbstractBaseEntity- unused

@@ -15,7 +15,7 @@ VALUES ('bill', 'bill@gmail.com', '$2a$10$III4LWdEygJq0yUcQzDOYOihtxPHzTlzx1/syB
 
 
 INSERT INTO role (name)
-VALUES ('USER');
+VALUES ('ROLE_USER');
 INSERT INTO role (name)
 VALUES ('ROLE_ADMIN');
 INSERT INTO role (name)

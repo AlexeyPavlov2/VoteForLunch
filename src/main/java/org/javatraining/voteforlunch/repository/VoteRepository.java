@@ -19,6 +19,9 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     @Query("DELETE FROM Vote v WHERE v.datev = :date")
     void removeByDatev(@Param("date") LocalDate date);
 
+    @Query("SELECT v FROM Vote v WHERE v.id = :id")
+    Vote findById(@Param("id") int id);
+
     @Query("SELECT v FROM Vote v WHERE v.datev = :date")
     List<Vote> findVotesByDatev(@Param("date") LocalDate date);
 

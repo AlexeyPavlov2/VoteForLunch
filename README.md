@@ -228,7 +228,7 @@ Spring Data JPA, Spring Cashing, Hibernate, H2 Database, Spring Boot Test, JUnit
 
 | Ресурс  | POST | GET | PUT | DELETE |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| **/public/menu/{date}**   | - | Получить меню ресторанов на указаннную дату | - |
+| **/public/menu?date={date}**   | - | Получить меню ресторанов на указаннную дату | - |
 | **/public/votes/votingresults?date={date}**   | - | Получить результаты голосования на указаннную дату | - |
 | **/public/register**   | Создать нового пользователя | - | - |
 

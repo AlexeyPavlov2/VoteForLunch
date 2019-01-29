@@ -34,6 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Cacheable("restaurants")
     public Restaurant read(int id) throws NotFoundException {
         return restaurantRepository.findById(id).orElseThrow(() -> new NotFoundException("Restaurant with id = " + id + " not found"));
     }
